@@ -1,2 +1,2 @@
 <?php
-echo 'blog.local';
+print 'blog.local';
