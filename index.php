@@ -1,2 +1,0 @@
-<?php
-print 'blog.local';
