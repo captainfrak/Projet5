@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^.*\.css$ - [NC,L]
+RewriteRule ^.*$ System/Router.php
