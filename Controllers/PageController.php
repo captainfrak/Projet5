@@ -36,6 +36,6 @@ class PageController extends Controller
 
     public function single_post()
     {
-        $this->render('single_post.html.twig');
+        $this->render('singlepost.html.twig');
     }
 }
