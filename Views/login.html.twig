@@ -1,0 +1,50 @@
+{{ include('layouts/head.html.twig') }}
+
+{{ include('layouts/nav.html.twig') }}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/Public/img/bg/connect.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="page-heading">
+                    <h1>Connexion</h1>
+                    <span class="subheading">Connectez vous ou créez un compte afin de pouvoir commenter les publications!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <p>Renseignez les champs ci dessous pour vous connecter :</p>
+            <form name="login" id="login" novalidate>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Indentifiant</label>
+                        <input type="text" class="form-control" placeholder="Indentifiant" id="name" required
+                               data-validation-required-message="Veuillez entrer votre nom.">
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="form-group floating-label-form-group controls">
+                        <label>Password</label>
+                        <input type="password" class="form-control" placeholder="Mot de passe" id="password" required
+                               data-validation-required-message="Veuillez entrer votre Email.">
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <br>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn btn-primary" id="loginButton">Connexion</button>
+                    <a href="/register" class="btn btn-primary" id="registerButton">Inscription</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
