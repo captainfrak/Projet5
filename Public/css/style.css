@@ -1,3 +1,5 @@
-* {
-
+.rounded-circle {
+    width: 200px;
+    height: 200px;
+    top: 0;
 }

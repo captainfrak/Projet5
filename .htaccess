@@ -1,4 +1,14 @@
 RewriteEngine on
 
 RewriteRule ^.*\.css$ - [NC,L]
+RewriteRule ^.*\.jpeg$ - [NC,L]
+RewriteRule ^.*\.jpg$ - [NC,L]
+RewriteRule ^.*\.pdf$ - [NC,L]
+RewriteRule ^.*\.js$ - [NC,L]
+RewriteRule ^.*\.map$ - [NC,L]
+RewriteRule ^.*\.eot$ - [NC,L]
+RewriteRule ^.*\.svg$ - [NC,L]
+RewriteRule ^.*\.ttf$ - [NC,L]
+RewriteRule ^.*\.woff$ - [NC,L]
+RewriteRule ^.*\.woff2$ - [NC,L]
 RewriteRule ^.*$ System/Router.php

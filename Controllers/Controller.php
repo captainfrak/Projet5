@@ -14,8 +14,9 @@ abstract class Controller
         $this->twig = new \Twig_Environment($loader, ["cache" => false]);
     }
 
-    public function render($filename, $args)
+    public function render($filename, $args = array())
     {
         echo $this->twig->render($filename, $args);
+
     }
 }
