@@ -1,5 +1,6 @@
 {
   "require": {
-    "twig/twig": "^2.0"
+    "doctrine/orm": "*",
+    "twig/twig": "^2.11"
   }
 }

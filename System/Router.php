@@ -5,7 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 
 use Controllers\PageController;
-
+use Controllers\UserController;
 
 $path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
 
@@ -17,15 +17,15 @@ try {
         $controller = new PageController();
         $controller->blog();
     } else if ($path == "/login") {
-        $controller = new PageController();
+        $controller = new UserController();
         $controller->loginPage();
     } else if ($path == "/admin") {
         $controller = new PageController();
         $controller->adminPage();
     } else if ($path == "/register") {
-        $controller = new PageController();
+        $controller = new UserController();
         $controller->registerPage();
-    } else if ($path == "/postarticle") {
+    } else if ($path == "/postArticle") {
         $controller = new PageController();
         $controller->postArticlePage();
     } else if ($path == "/single_post") {

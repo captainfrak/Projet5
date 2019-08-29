@@ -9,19 +9,9 @@ class PageController extends Controller
         $this->render('index.html.twig');
     }
 
-    public function loginPage()
-    {
-        $this->render('login.html.twig');
-    }
-
     public function adminPage()
     {
         $this->render('admin.html.twig');
-    }
-
-    public function registerPage()
-    {
-        $this->render('register.html.twig');
     }
 
     public function postArticlePage()
