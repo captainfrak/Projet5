@@ -1,7 +1,8 @@
-{{ include('layouts/head.html.twig') }}
+{% extends "index.html.twig" %}
 
-{{ include('layouts/nav.html.twig') }}
+{% block title %}Login{% endblock %}
 
+{% block header %}
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('/Public/img/bg/connect.jpg')">
     <div class="overlay"></div>
@@ -16,10 +17,12 @@
         </div>
     </div>
 </header>
+{% endblock %}
 
+{% block body %}
 <!-- Main Content -->
 <div class="container">
-    <div class="row text-center">
+    <div class="row justify-content-center">
         {% if  submit %}
             <div class="alert alert-success">
                 Bravo {{ user.firstName }} !
@@ -28,9 +31,11 @@
         {% endif %}
         {% if  hadToRegister %}
             <div class="alert alert-danger">
-                Créer un compte!
+                Veuillez créer un compte!
             </div>
         {% endif %}
+    </div>
+    <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 mx-auto">
             <p>Renseignez les champs ci dessous pour vous connecter :</p>
             <form name="login" action="" method="post" id="login" novalidate>
@@ -66,3 +71,4 @@
         </div>
     </div>
 </div>
+{% endblock %}

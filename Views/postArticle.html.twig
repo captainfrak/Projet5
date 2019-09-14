@@ -1,14 +1,169 @@
-{{ include('layouts/admin.head.html.twig') }}
+{% extends "index.html.twig" %}
 
-<script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+{% block title %}Poster un article{% endblock %}
 
-{{ include('layouts/admin.nav.html.twig') }}
+{% block cssblock %}
+    <!-- Bootstrap core CSS -->
+    <link href="/Public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/Public/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/Public/css/admin.css">
+    <script src="https://cdn.ckeditor.com/4.12.1/standard/ckeditor.js"></script>
+{% endblock %}
+
+{% block navblock %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">SylvainSaez.fr</a>
+            <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="">Portfolio</a>
+                    </li>
+                    {% if user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Administration</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Deconnexion</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Connexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
 
 <div class="container">
+    <div class="row justify-content-center">
+        <h1>Nouvel Article</h1>
+    </div>
+    {% if  submit %}
+        <div class="row justify-content-center">
+            <div class="alert alert-success">
+                Bravo !
+                Ton article ({{ post.title }}) a bien été enregistré!
+            </div>
+        </div>
+    {% endif %}
+    {% if changes %}
+        <div class="row justify-content-center">
+            <div class="col">
+                <div class="alert alert-info">
+                    Bravo !
+                    Ton article ({{ post.title }}) a bien été modifié!
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if modify %}
+        <div class="row justify-content-center">
+            <form action="" name="postarticle" method="post">
+                <div class="control-group">
+                    <div class="form-group">
+                        <label for="">Titre de l'article :</label>
+                        <input type="text" name="title" value="{{ post.title }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Chapo de l'article :</label>
+                        <input type="text" name="chapo" value="{{ post.chapo }}">
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <textarea id="content" type="textarea" name="content"
+                                      placeholder="contenu de l'article">{{ post.contentText }}</textarea>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Auteur :</label>
+                        <select name="author" id="">
+                            <option value="Frak">Frak</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Route de l'article :</label>
+                        <input type="text" name="route" value="{{ post.route }}">
+                    </div>
+                    <hr>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-info" id="loginButton">Publié la modification</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <form action="" name="postarticle" method="post">
+                <div class="control-group">
+                    <div class="form-group">
+                        <label for="">Titre de l'article :</label>
+                        <input type="text" name="title" placeholder="Titre de l'article">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Chapo de l'article :</label>
+                        <input type="text" name="chapo" placeholder="Chapo de l'article">
+                    </div>
+                    <div class="form-group">
+                        <input type="textarea" name="content" placeholder="Titre de l'article">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Auteur :</label>
+                        <select name="author" id="">
+                            <option value="Frak">Frak</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Route de l'article :</label>
+                        <input type="text" name="route" placeholder="route de l'article">
+                    </div>
+                    <hr>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary" id="loginButton">Publier l'article</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% endif %}
 
-    <textarea name="editor1"></textarea>
     <script>
-        CKEDITOR.replace('editor1');
+        CKEDITOR.replace('content');
     </script>
 
 </div>
+
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <p class="text-center text-muted">Copyright &copy; Frakdev | 2019</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

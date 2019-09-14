@@ -1,7 +1,7 @@
 <?php
 spl_autoload_register(
 /**
- * @param $class
+ * @param string $class
  */
     function ($class) {
         $class = str_replace("\\", "/", $class);

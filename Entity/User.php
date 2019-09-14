@@ -8,7 +8,7 @@ class User
 {
     /**
      * @var integer $id
-     * @Id @Column(type="integer") @GeneratedValue
+     * @id @Column(type="integer") @GeneratedValue
      */
     protected $id;
 
@@ -41,6 +41,12 @@ class User
      * @password @Column(type="string")
      */
     protected $password;
+
+    /**
+     * @var int $role
+     * @role @column(type="integer")
+     */
+    protected $role;
 
     /**
      * @return int
@@ -137,6 +143,24 @@ class User
     public function setFirstName(string $firstName): User
     {
         $this->firstName = $firstName;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRole(): int
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param int $role
+     * @return User
+     */
+    public function setRole(int $role): User
+    {
+        $this->role = $role;
         return $this;
     }
 }

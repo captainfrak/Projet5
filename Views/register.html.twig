@@ -1,7 +1,8 @@
-{{ include('layouts/head.html.twig') }}
+{% extends "index.html.twig" %}
 
-{{ include('layouts/nav.html.twig') }}
+{% block title %}Register{% endblock %}
 
+{% block header %}
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('/Public/img/bg/register.jpg')">
     <div class="overlay"></div>
@@ -16,7 +17,9 @@
         </div>
     </div>
 </header>
+{% endblock %}
 
+{% block body %}
 <div class="container">
     <div class="row justify-content-center">
         {% if  submit %}
@@ -67,6 +70,7 @@
                                id="password" required
                                data-validation-required-message="Veuillez entrer votre mot de passe.">
                         <p class="help-block text-danger"></p>
+                        <input type="text" name="role" value="10" class="d-none">
                     </div>
                 </div>
                 <br>
@@ -76,3 +80,5 @@
             </form>
         </div>
     </div>
+</div>
+{% endblock %}

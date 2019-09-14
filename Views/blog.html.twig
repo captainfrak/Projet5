@@ -1,7 +1,8 @@
-{{ include('layouts/head.html.twig') }}
+{% extends "index.html.twig" %}
 
-{{ include('layouts/nav.html.twig') }}
+{% block title %}Le Blog{% endblock %}
 
+{% block header %}
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('/Public/img/bg/blog.jpg')">
     <div class="overlay"></div>
@@ -16,34 +17,38 @@
         </div>
     </div>
 </header>
+{% endblock %}
 
+{% block body %}
 <!-- Main Content -->
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-preview">
-                <a href="/single_post">
-                    <h2 class="post-title">
-                        Test
-                    </h2>
-                    <h3 class="post-subtitle">
-                        Test
-                    </h3>
-                </a>
-                <p class="post-meta">Posté par
-                    <a href="#">Frak</a>
-                    on July 24, 2019</p>
-            </div>
-            <hr>
-            <!-- Pager
-            <div class="clearfix">
-              <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
-            </div>
-          </div>
+    <div class="col-lg-8 col-md-10 mx-auto">
+    {% for post in posts %}
+        <div class="post-preview">
+            <a href="/singlePost?route={{ post.route }}?id={{ post.id }}">
+                <h2 class="post-title">
+                    {{ post.title|e('html') }}
+                </h2>
+                <h3 class="post-subtitle">
+                    {{ post.chapo|e('html') }}
+                </h3>
+            </a>
+            <p class="post-meta">Posté par
+                <a href="#">{{ post.author }}</a>
+                on {{ post.datecreation|date("d/m/Y") }}</p>
         </div>
-      </div>
+    {% endfor %}
+    <hr>
+    <!-- Pager
+    <div class="clearfix">
+      <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+    </div>
+  </div>
+</div>
+</div>
 
-      <hr> -->
+<hr> -->
 
 
-{{ include('layouts/footer.html.twig') }}
+{% endblock %}
