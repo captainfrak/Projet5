@@ -26,6 +26,8 @@ class UserController extends Controller
                         } else {
                             return $this->render('index.html.twig');
                         }
+                    } else {
+                        return $this->render('login.html.twig', ['checkmdp' => true]);
                     }
                 }
             } elseif (!empty($_POST['email']) && empty($_POST['password'])) {

@@ -26,7 +26,7 @@
     <div class="col-lg-8 col-md-10 mx-auto">
     {% for post in posts %}
         <div class="post-preview">
-            <a href="/singlePost?route={{ post.route }}?id={{ post.id }}">
+            <a href="blog/article/{{ post.route }}"> <!-- -->
                 <h2 class="post-title">
                     {{ post.title|e('html') }}
                 </h2>
@@ -36,7 +36,7 @@
             </a>
             <p class="post-meta">Posté par
                 <a href="#">{{ post.author }}</a>
-                on {{ post.datecreation|date("d/m/Y") }}</p>
+                le {{ post.datecreation|date("d/m/Y") }}</p>
         </div>
     {% endfor %}
     <hr>

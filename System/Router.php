@@ -8,13 +8,16 @@ use Controllers\AdminController;
 use Controllers\BlogController;
 use Controllers\PageController;
 use Controllers\UserController;
+use System\Database;
 
 session_start();
 if (!isset($_SESSION)) {
     $_SESSION = null;
 }
 $path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
-
+$route = explode('/', $_SERVER['REQUEST_URI'])[3];
+$regex = '/\/blog\/article\/([^.]+)/';
+$result_matches = array();
 try {
     if ($path == "/") {
         $controller = new PageController();
@@ -37,9 +40,20 @@ try {
     } else if (rtrim($path, '/') == "/postarticle") {
         $controller = new AdminController();
         $controller->postArticlePage();
-    } else if (rtrim($path, '/') == "/singlePost") {
-        $controller = new BlogController();
-        $controller->singlePost();
+
+    } else if (rtrim($path, '/') == "/blog/article/$route") {
+        if (preg_match($regex, $path, $result_matches)) {
+            $entityManager = Database::getEntityManager();
+            $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
+            if ($post == !null) {
+                $controller = new BlogController();
+                $controller->singlePost();
+            } elseif ($post == null) {
+                $controller = new PageController();
+                $controller->errorPage();
+            }
+        }
+
     } else if (rtrim($path, '/') == "/logout") {
         $controller = new PageController();
         $controller->logout();
