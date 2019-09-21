@@ -1,7 +1,8 @@
-{{ include('layouts/head.html.twig') }}
+{% extends "index.html.twig" %}
 
-{{ include('layouts/nav.html.twig') }}
+{% block title %}Login{% endblock %}
 
+{% block header %}
 <!-- Page Header -->
 <header class="masthead" style="background-image: url('/Public/img/bg/connect.jpg')">
     <div class="overlay"></div>
@@ -16,27 +17,52 @@
         </div>
     </div>
 </header>
+{% endblock %}
 
+{% block body %}
 <!-- Main Content -->
 <div class="container">
-    <div class="row">
+    <div class="row justify-content-center">
+        {% if  submit %}
+            <div class="alert alert-success">
+                Bravo {{ user.firstName }} !
+                Tu es connecté(e)!
+            </div>
+        {% endif %}
+        {% if  hadToRegister %}
+            <div class="alert alert-danger">
+                Veuillez créer un compte!
+            </div>
+        {% endif %}
+    </div>
+    <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 mx-auto">
             <p>Renseignez les champs ci dessous pour vous connecter :</p>
-            <form name="login" id="login" novalidate>
+            <form name="login" action="" method="post" id="login" novalidate>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Indentifiant</label>
-                        <input type="text" class="form-control" placeholder="Indentifiant" id="name" required
-                               data-validation-required-message="Veuillez entrer votre nom.">
+                        <input name="email" type="text" class="form-control" placeholder="email" id="email" required
+                               data-validation-required-message="Veuillez entrer votre email.">
                         <p class="help-block text-danger"></p>
+                        {% if  email %}
+                            <div class="alert alert-danger">Merci de renseigner votre email</div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Password</label>
-                        <input type="password" class="form-control" placeholder="Mot de passe" id="password" required
-                               data-validation-required-message="Veuillez entrer votre Email.">
+                        <input name="password" type="password" class="form-control" placeholder="Mot de passe"
+                               id="password" required
+                               data-validation-required-message="Veuillez entrer votre mot de passe.">
                         <p class="help-block text-danger"></p>
+                        {% if  mdp %}
+                            <div class="alert alert-danger">Merci de renseigner votre mot de passe</div>
+                        {% endif %}
+                        {% if  checkmdp %}
+                            <div class="alert alert-danger">Merci de renseigner le bon mot de passe</div>
+                        {% endif %}
                     </div>
                 </div>
                 <br>
@@ -48,3 +74,4 @@
         </div>
     </div>
 </div>
+{% endblock %}

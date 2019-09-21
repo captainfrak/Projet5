@@ -1,0 +1,54 @@
+{% extends "index.html.twig" %}
+
+{% block title %}Le Blog{% endblock %}
+
+{% block header %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/Public/img/bg/blog.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <div class="site-heading">
+                    <h1>Le Blog</h1>
+                    <span class="subheading">Comment j'ai réalisé le blog étape par étape</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+    {% for post in posts %}
+        <div class="post-preview">
+            <a href="blog/article/{{ post.route }}"> <!-- -->
+                <h2 class="post-title">
+                    {{ post.title|e('html') }}
+                </h2>
+                <h3 class="post-subtitle">
+                    {{ post.chapo|e('html') }}
+                </h3>
+            </a>
+            <p class="post-meta">Posté par
+                <a href="#">{{ post.author }}</a>
+                le {{ post.datecreation|date("d/m/Y") }}</p>
+        </div>
+    {% endfor %}
+    <hr>
+    <!-- Pager
+    <div class="clearfix">
+      <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<hr> -->
+
+
+{% endblock %}

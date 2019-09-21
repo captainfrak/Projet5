@@ -1,18 +1,24 @@
 <div class="container">
-    <div class="row">
+    <div class="row text-align-center">
         <div class="col-lg-8 col-md-10 mx-auto">
             <h2>Me contacter</h2>
             <p>
                 Remplissez les champs ci dessous et je me ferais un plaisir de vous
                 répondre!
             </p>
-            <form name="sentMessage" id="contactForm" novalidate>
+            {% if post %}
+                <div class="alert alert-success">
+                    <p>Votre message a bien été envoyé</p>
+                </div>
+            {% endif %}
+            <form name="contact" action="" method="post" id="contactForm">
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Nom</label>
                         <input
                                 type="text"
                                 class="form-control"
+                                name="nom"
                                 placeholder="Nom"
                                 id="name"
                                 required
@@ -27,6 +33,7 @@
                         <input
                                 type="email"
                                 class="form-control"
+                                name="email"
                                 placeholder="Email"
                                 id="email"
                                 required
@@ -41,6 +48,7 @@
                         <textarea
                                 rows="5"
                                 class="form-control"
+                                name="message"
                                 placeholder="Votre message"
                                 id="message"
                                 required

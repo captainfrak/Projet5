@@ -1,0 +1,55 @@
+{{ include('layouts/head.html.twig') }}
+
+{{ include('layouts/nav.html.twig') }}
+
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('/Public/img/bg/index.jpg')">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col mx-auto">
+                <div class="page-heading">
+                    <img src="/Public/img/profil/pp.jpg" alt="une photo de profil noire" class="rounded-circle">
+                </div>
+            </div>
+            <div class="col mx-auto">
+                <div class="page-heading">
+                    <h1>Bienvenue</h1>
+                    <span class="subheading">Un petit resumé de ce que je sais faire</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            <p>Actuellement en reconversion professionnelle, j’ai intégré le parcours developpeur d’applications
+                Php/Synfony auprès de l’organisme de formation Open Classrooms.</p>
+            <a href="/Public/cv/CV-Sylvain.pdf" class="btn btn-block btn-outline-dark" download>Télécharger mon CV</a>
+            <p>Actuellement a la moitié du parcours, j’ai eu l’occasion de me familiariser avec plusieurs technologies
+                Web : </p>
+            <ul>
+                <li>HTML5 et CSS3</li>
+                <li>Wordpress</li>
+                <li>Bootstrap</li>
+                <li>UML</li>
+                <li>PHP (MVC, POO)</li>
+            </ul>
+            <p>La suite du parcours me permettra de completer ces connaissances en me formant sur Synfony, les API REST,
+                Javascript</p>
+            <p>Ce site a pour but de montrer mon avancée grace a un blog et par la suite l’ajout d’un portfolio qui
+                permettra d’accéder a mes différents projets.</p>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+{{ include('contact.html.twig') }}
+
+
+
+{{ include('layouts/footer.html.twig') }}

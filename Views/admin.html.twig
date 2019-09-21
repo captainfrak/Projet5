@@ -1,7 +1,60 @@
-{{ include('layouts/admin.head.html.twig') }}
+{% extends "index.html.twig" %}
 
-{{ include('layouts/admin.nav.html.twig') }}
+{% block title %}Adminiastration{% endblock %}
 
+{% block cssblock %}
+    <!-- Bootstrap core CSS -->
+    <link href="/Public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/Public/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/Public/css/admin.css">
+{% endblock %}
+
+{% block navblock %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">SylvainSaez.fr</a>
+            <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="../../System/Router.php">Portfolio</a>
+                    </li>
+                    {% if user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Administration</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Deconnexion</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Connexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+
+{% block body %}
 <div class="container-fluid">
     <div class="row">
         <div class="col">
@@ -12,9 +65,9 @@
     <div class="row" id="main">
         <div class="col-lg-3 col-md-3" id="sidebar">
             <br>
-            <a href="postarticle.html" class="btn btn-dark btn-block">Liste des articles</a>
-            <a href="postarticle" class="btn btn-dark btn-block">Publier un article</a>
-            <a href="postarticle.html" class="btn btn-dark btn-block">Modifier un article</a>
+            <a href="/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
+            <a href="/postarticle" class="btn btn-dark btn-block">Publier un article</a>
+            <a href="postarticle.html" class="btn btn-dark btn-block">Validation commentaires</a>
             <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
             <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
 
@@ -29,15 +82,15 @@
             <div class="row text-center justify-content-around">
                 <div class="col-3 border border-dark rounded">
                     <h6>Nb users :</h6>
-                    <span>9</span>
+                    <span>{{ nbUsers }}</span>
                 </div>
                 <div class="col-3 border border-dark rounded">
                     <h6>Nb Posts :</h6>
-                    <span>0</span>
+                    <span>{{ nbPosts }}</span>
                 </div>
                 <div class="col-3 border border-dark rounded">
-                    <h6>Nb Vues :</h6>
-                    <span>2</span>
+                    <h6>Nb Coms :</h6>
+                    <span>{{ nbComs }}</span>
                 </div>
             </div>
             <div class="col">
@@ -62,33 +115,27 @@
                     <th>Frak</th>
                     <th>18/08/2019</th>
                     <th></th>
-                    <th><a href=""><i class="far fa-edit"></i></a></i></th>
-                    <th><a href=""><i class="fas fa-trash-alt"></i></a></i></th>
-                </tr>
-                <tr class="text-center">
-                    <th>2</th>
-                    <th>Second Post</th>
-                    <th>Frak</th>
-                    <th>18/08/2019</th>
-                    <th></th>
-                    <th><a href=""><i class="far fa-edit"></i></a></i></th>
-                    <th><a href=""><i class="fas fa-trash-alt"></i></a></i></th>
-                </tr>
-                <tr class="text-center">
-                    <th>1</th>
-                    <th>Premier Post</th>
-                    <th>Frak</th>
-                    <th>18/08/2019</th>
-                    <th></th>
-                    <th><a href=""><i class="far fa-edit"></i></a></i></th>
-                    <th><a href=""><i class="fas fa-trash-alt"></i></a></i></th>
+                    <th><a href="/modify?{{ post.id }}"><i class="far fa-edit"></i></a></i></th>
+                    <th><a href="/erase?{{ post.id }}"><i class="fas fa-trash-alt"></i></a></i></th>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+{% endblock %}
 
-{{ include('layouts/admin.footer.html.twig') }}
+{% block footer %}
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <p class="text-center text-muted">Copyright &copy; Frakdev | 2019</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}
+
 
 
