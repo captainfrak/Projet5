@@ -29,8 +29,13 @@ class BlogController extends Controller
         $comments = true;
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
+        if ($post != null) {
+            $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments]);
 
-        $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments]);
+        } else {
+            $pageController = new PageController();
+            $pageController->errorPage();
+        }
     }
 
 }
