@@ -79,6 +79,13 @@
             </div>
         </div>
     {% endif %}
+    {% if double %}
+        <div class="row justify-content-center">
+            <div class="alert alert-danger">
+                LA Route de l'article doit être unique
+            </div>
+        </div>
+    {% endif %}
     {% if modify %}
         <div class="row justify-content-center">
             <form action="" name="postarticle" method="post">

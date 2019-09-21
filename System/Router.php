@@ -14,8 +14,8 @@ session_start();
 if (!isset($_SESSION)) {
     $_SESSION = null;
 }
-$path = explode('?', $_SERVER['REQUEST_URI'], 2)[0];
-$route = explode('/', $_SERVER['REQUEST_URI'])[3];
+$path = explode('?', $_SERVER['REQUEST_URI'])[0];
+$route = basename($_SERVER['REQUEST_URI']);
 $regex = '/\/blog\/article\/([^.]+)/';
 $result_matches = array();
 try {
@@ -47,12 +47,13 @@ try {
             $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
             if ($post == !null) {
                 $controller = new BlogController();
-                $controller->singlePost();
+                $controller->singlePost($route);
             } elseif ($post == null) {
                 $controller = new PageController();
                 $controller->errorPage();
             }
         }
+
 
     } else if (rtrim($path, '/') == "/logout") {
         $controller = new PageController();

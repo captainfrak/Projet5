@@ -13,7 +13,7 @@ class UserController extends Controller
         if ($_POST) {
             $userEmail = htmlentities(htmlspecialchars($_POST['email']));
             $userPassword = htmlentities(htmlspecialchars($_POST['password']));
-            $user = self::getUserRepository('Entity\User')->findOneBy(['email' => $userEmail]);
+            $user = self::getUserRepository()->findOneBy(['email' => $userEmail]);
 
             if (!empty($userEmail) && !empty($userPassword)) {
                 if ($user == !$userEmail) {
@@ -39,7 +39,7 @@ class UserController extends Controller
                 return $this->render('login.html.twig', ['mdp' => true, 'email' => true]);
             }
         }
-        $this->render('login.html.twig');
+        $this->render('login.html.twig', $errors);
     }
 
     public function registerPage()
@@ -74,6 +74,6 @@ class UserController extends Controller
                 $errors = ['emptyForm' => true];
             }
         }
-        return $this->render('register.html.twig', $errors);
+        $this->render('register.html.twig', $errors);
     }
 }

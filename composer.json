@@ -1,6 +1,9 @@
 {
   "require": {
     "doctrine/orm": "*",
-    "twig/twig": "^2.11"
+    "twig/twig": "^2.11",
+    "symfony/var-dumper": "^4.3"
+  },
+  "require-dev": {
   }
 }

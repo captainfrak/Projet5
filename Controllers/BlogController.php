@@ -16,21 +16,21 @@ class BlogController extends Controller
 
     }
 
-    public function singlePost()
+    public function singlePost($route)
     {
-        /**
-         * Get the Route of the post
-         */
-        $route = explode('/', $_SERVER['REQUEST_URI'])[3];
-
-
         /**
          * Get the post by Route
          */
+        if ($_SESSION == null) {
+            $session = false;
+        } else {
+            $session = true;
+        }
+        $comments = true;
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
 
-        $this->render('singlePost.html.twig', ['post' => $post]);
+        $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments]);
     }
 
 }

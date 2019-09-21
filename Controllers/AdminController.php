@@ -11,21 +11,21 @@ class AdminController extends Controller
     public function adminPage()
     {
         // total of users, total of posts, total of comments(later)
-        $totalPosts = self::getPostRepository('Entity\Post')->findBy([], ['id' => 'ASC']);
-        $totalUsers = self::getUserRepository('Entity\User')->findBy([], ['id' => 'ASC']);
+        $totalPosts = self::getPostRepository()->findBy([], ['id' => 'ASC']);
+        $totalUsers = self::getUserRepository()->findBy([], ['id' => 'ASC']);
         $nbPosts = count($totalPosts);
         $nbUsers = count($totalUsers);
         $nbComs = 0;
 
         //user connected at the moment
-        $user = self::getUserRepository('Entity\User')->findOneBy(['id' => $_SESSION['user']]);
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
             $this->render('404.html.twig');
         } else if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
-            if ($user->getRole() == 26) {
+            if ($user->isAdmin()) {
                 $this->render('admin.html.twig', ['nbUsers' => $nbUsers, 'nbPosts' => $nbPosts, 'nbComs' => $nbComs]);
-            } else if ($user->getRole() != 26) {
+            } else {
                 $this->render('404.html.twig');
             }
         }
@@ -33,7 +33,7 @@ class AdminController extends Controller
 
     public function postArticlePage()
     {
-        $user = self::getUserRepository('Entity\User')->findOneBy(['id' => $_SESSION['user']]);
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
 
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
@@ -53,21 +53,28 @@ class AdminController extends Controller
                         $route = $_POST['route'];
                         $date = time();
 
-                        $post = new Post();
-                        $post
-                            ->setTitle($title)
-                            ->setChapo($chapo)
-                            ->setContentText($contentText)
-                            ->setAuthor($author)
-                            ->setRoute($route)
-                            ->setDateCreation($date);
+                        $postRoute = self::getPostRepository()->findOneBy(['route' => $route]);
 
-                        $entityManager->persist($post);
-                        $entityManager->flush();
-                        return $this->render('postArticle.html.twig', ['submit' => true, 'post' => $post]);
+                        if ($postRoute == !null) {
+                            return $this->render('postArticle.html.twig', ['double' => true]);
+                        } else {
+
+                            $post = new Post();
+                            $post
+                                ->setTitle($title)
+                                ->setChapo($chapo)
+                                ->setContentText($contentText)
+                                ->setAuthor($author)
+                                ->setRoute($route)
+                                ->setDateCreation($date);
+
+                            $entityManager->persist($post);
+                            $entityManager->flush();
+                            return $this->render('postArticle.html.twig', ['submit' => true, 'post' => $post]);
+                        }
                     }
                 }
-                $this->render('postArticle.html.twig');
+                $this->render('postArticle.html.twig', $errors);
             } else if ($user->getRole() != 26) {
                 $this->render('404.html.twig');
             }
@@ -88,7 +95,7 @@ class AdminController extends Controller
          */
         $entityManager = Database::getEntityManager();
 
-        $user = self::getUserRepository('Entity\User')->findOneBy(['id' => $_SESSION['user']]);
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
 
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
@@ -108,7 +115,7 @@ class AdminController extends Controller
     public function listArticle()
     {
 
-        $user = self::getUserRepository('Entity\User')->findOneBy(['id' => $_SESSION['user']]);
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
 
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
@@ -127,6 +134,7 @@ class AdminController extends Controller
 
     public function modifyArticle()
     {
+
         /**
          * Get the Id of the post
          */
@@ -140,7 +148,7 @@ class AdminController extends Controller
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->find($id);
 
-        $user = self::getUserRepository('Entity\User')->findOneBy(['id' => $_SESSION['user']]);
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
 
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;

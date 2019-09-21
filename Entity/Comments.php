@@ -16,19 +16,25 @@ class Comments
 
     /**
      * @var string $author
-     * @title @Column(type="string")
+     * @author @Column(type="string")
      */
     protected $author;
 
     /**
      * @var string $message
-     * @title @Column(type="string")
+     * @message @Column(type="string")
      */
     protected $message;
 
     /**
+     * @var integer $checked
+     * @check @Column(type="integer")
+     */
+    protected $checked;
+
+    /**
      * @var integer $postdate
-     * @title @Column(type="integer")
+     * @postdate @Column(type="integer")
      */
     protected $postdate;
 
@@ -91,5 +97,24 @@ class Comments
     public function setPostdate(int $postdate): Comments
     {
         $this->postdate = $postdate;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChecked(): int
+    {
+        return $this->checked;
+    }
+
+    /**
+     * @param int $checked
+     * @return Comments
+     */
+    public function setChecked(int $checked): Comments
+    {
+        $this->checked = $checked;
+        return $this;
     }
 }

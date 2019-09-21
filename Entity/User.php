@@ -6,47 +6,49 @@ namespace Entity;
  **/
 class User
 {
+    private static $ADMIN_ROLE_ID = 26;
+
     /**
      * @var integer $id
      * @id @Column(type="integer") @GeneratedValue
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string $username
      * @username @Column(type="string")
      */
-    protected $username;
+    private $username;
 
     /**
      * @var string name
      * @name @Column(type="string")
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string $firstName
      * @firstName @Column(type="string")
      */
-    protected $firstName;
+    private $firstName;
 
     /**
      * @var string $email
      * @email @Column(type="string")
      */
-    protected $email;
+    private $email;
 
     /**
      * @var string $password
      * @password @Column(type="string")
      */
-    protected $password;
+    private $password;
 
     /**
      * @var int $role
      * @role @column(type="integer")
      */
-    protected $role;
+    private $role;
 
     /**
      * @return int
@@ -162,5 +164,10 @@ class User
     {
         $this->role = $role;
         return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::$ADMIN_ROLE_ID;
     }
 }
