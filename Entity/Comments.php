@@ -39,6 +39,12 @@ class Comments
     protected $postdate;
 
     /**
+     * @var integer $postId
+     * @postId @Column(type="integer")
+     */
+    protected $postId;
+
+    /**
      * @return int
      */
     public function getId(): int
@@ -115,6 +121,24 @@ class Comments
     public function setChecked(int $checked): Comments
     {
         $this->checked = $checked;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPostId(): int
+    {
+        return $this->postId;
+    }
+
+    /**
+     * @param int $postId
+     * @return Comments
+     */
+    public function setPostId(int $postId): Comments
+    {
+        $this->postId = $postId;
         return $this;
     }
 }
