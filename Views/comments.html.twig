@@ -1,0 +1,52 @@
+<div class="container">
+    {% if session %}
+        <div class="row justify-content-center m-2">
+            <h2>Commenter l'article</h2>
+        </div>
+        <div class="row justify-content-center">
+            <form action="" method="post" name="commentFrom">
+                <div class="control-group">
+                    <div class="form-group">
+                        <label for="">Utilisateur : "caché pour le moment"</label>
+                        <input type="text" name="userName" value="{{ user.name }}" hidden>
+                    </div>
+                    <div class="form-group floating-label-form-group controls">
+                        <label for="">Votre Commentaire</label>
+                        <textarea class="form-control" name="comment" placeholder="Votre message" id="comment" cols="20"
+                                  rows="5"></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-dark mt-3" id="commentButton">Poster mon commentaire
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            <p>Merci de vous enregistrer pour avoir accés a la partie commentaire du site!</p>
+        </div>
+    {% endif %}
+    {% if comments %}
+        <div class="row justify-content-center border border-light p-2 m-4">
+            <div class="col-lg-6 sm">
+                <div class="row sm-6">
+                    De :
+                </div>
+                <div class="row sm-6">
+                    Le :
+                </div>
+            </div>
+            <div class="col-lg-6 sm">
+                <div class="row">
+                    Le message :
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row justify-content-center">
+            Pas de commentaire pour le moment sur cet article
+        </div>
+    {% endif %}
+</div>
+
