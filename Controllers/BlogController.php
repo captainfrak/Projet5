@@ -29,7 +29,7 @@ class BlogController extends Controller
         // GET EM
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
-        $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['postId' => $post->getID()], ['id' => 'DESC']);
+        $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['postId' => $post->getID(), 'checked' => 1], ['id' => 'DESC']);
         // If $route match with existing route
         if ($post != null) {
             if ($_POST) {
