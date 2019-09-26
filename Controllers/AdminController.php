@@ -57,7 +57,8 @@ class AdminController extends Controller
                         $postRoute = self::getPostRepository()->findOneBy(['route' => $route]);
 
                         if ($postRoute == !null) {
-                            return $this->render('postArticle.html.twig', ['double' => true]);
+                            $this->render('postArticle.html.twig', ['double' => true]);
+                            exit();
                         } else {
 
                             $post = new Post();
@@ -71,7 +72,8 @@ class AdminController extends Controller
 
                             $entityManager->persist($post);
                             $entityManager->flush();
-                            return $this->render('postArticle.html.twig', ['submit' => true, 'post' => $post]);
+                            $this->render('postArticle.html.twig', ['submit' => true, 'post' => $post]);
+                            exit();
                         }
                     }
                 }
@@ -243,6 +245,33 @@ class AdminController extends Controller
 
     public function deleteComment()
     {
+        /**
+         * Get the Id of the comment
+         */
+        $url = explode('?', $_SERVER['REQUEST_URI'], 0)[0];
+        $character_mask = "/delete?";
+        $id = ltrim($url, $character_mask);
 
+        /**
+         * getting the entity manager
+         */
+        $entityManager = Database::getEntityManager();
+        $comment = $entityManager->getRepository('Entity\\comment')->find($id);
+
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        if ($user == null) {
+            $this->render('404.html.twig');
+        } else if (isset($_SESSION)) {
+            $_SESSION["user"] = $user;
+            if ($user->isAdmin()) {
+                $entityManager->remove($comment);
+                $entityManager->flush();
+
+                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
+                $this->render('validate.html.twig', ['comments' => $comments, 'remove' => true]);
+            } else {
+                $this->render('404.html.twig');
+            }
+        }
     }
 }

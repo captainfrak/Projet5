@@ -52,7 +52,13 @@ try {
         $controller->modifyArticle();
     } else if (rtrim($path, '/') == "/validation") {
         $controller = new AdminController();
-        $controller->validateArticle();
+        $controller->CommentToValidate();
+    } else if (rtrim($path, '/') == "/validate") {
+        $controller = new AdminController();
+        $controller->validateComment();
+    } else if (rtrim($path, '/') == "/delete") {
+        $controller = new AdminController();
+        $controller->deleteComment();
     } else {
         $controller = new PageController();
         $controller->errorPage();

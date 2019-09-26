@@ -65,13 +65,19 @@
                             Le commentaire a bien été validé
                         </div>
                     {% endif %}
+                    {% if remove %}
+                        <div class="alert alert-info">
+                            Le commentaire a bien été supprimé
+                        </div>
+                    {% endif %}
                     {% for comment in comments %}
                         <div class="card text-center dark mb-3">
                             <div class="card-header">
                                 Dans : {{ comment.postId }}
                             </div>
                             <div class="card-body">
-                                <h6 class="card-title">De : {{ comment.author }} || Le : {{ comment.dateCreation|date("m/d/Y") }} </h6>
+                                <h6 class="card-title">De : {{ comment.author }} || Le
+                                    : {{ comment.dateCreation|date("d/m/Y") }} </h6>
                                 <p class="card-text">{{ comment.message }}</p>
                             </div>
                             <div class="card-footer">

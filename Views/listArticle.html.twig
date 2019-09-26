@@ -82,8 +82,8 @@
                                 <th>{{ post.author }}</th>
                                 <th>{{ post.dateCreation|date("m/d/Y") }}</th>
                                 <th></th>
-                                <th><a href="/modify?{{ post.id }}"><i class="far fa-edit"></i></a></i></th>
-                                <th><a href="/erase?{{ post.id }}"><i class="fas fa-trash-alt"></i></a></i></th>
+                                <th><a href="/modify?{{ post.id }}"><i class="far fa-edit"></i></a></th>
+                                <th><a href="/erase?{{ post.id }}"><i class="fas fa-trash-alt"></i></a></th>
                             </tr>
                         {% endfor %}
                         </tbody>
