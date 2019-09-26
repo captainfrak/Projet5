@@ -1,0 +1,94 @@
+{% extends "index.html.twig" %}
+
+{% block title %}Validation des commentaires{% endblock %}
+
+{% block cssblock %}
+    <!-- Bootstrap core CSS -->
+    <link href="/Public/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/Public/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/Public/css/admin.css">
+
+{% endblock %}
+
+{% block navblock %}
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">SylvainSaez.fr</a>
+            <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                    aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blog">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="">Portfolio</a>
+                    </li>
+                    {% if user %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin">Administration</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/logout">Deconnexion</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Connexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <h1 class="w-100 mb-4 text-center">Gestion des commentaires</h1>
+            <div class="row justify-content-center">
+                <div class="col">
+
+                    {% for comment in comments %}
+                        <div class="card text-center dark mb-3">
+                            <div class="card-header">
+                                Dans : {{ comment.postId }}
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">De : {{ comment.author }} || Le : {{ comment.dateCreation|date("m/d/Y") }} </h6>
+                                <p class="card-text">{{ comment.message }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/validation?{{ comment.id }}"><button class="btn btn-success"><i class="fas fa-check"></i></button></a>
+                                <a href="/delete?{{ comment.id }}"><button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <footer>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <p class="text-center text-muted">Copyright &copy; Frakdev | 2019</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock %}

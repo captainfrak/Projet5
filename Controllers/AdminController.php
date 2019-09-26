@@ -13,9 +13,10 @@ class AdminController extends Controller
         // total of users, total of posts, total of comments(later)
         $totalPosts = self::getPostRepository()->findBy([], ['id' => 'ASC']);
         $totalUsers = self::getUserRepository()->findBy([], ['id' => 'ASC']);
+        $totalComs = self::getComsRepository()->findBy([], ['id' => 'ASC']);
         $nbPosts = count($totalPosts);
         $nbUsers = count($totalUsers);
-        $nbComs = 0;
+        $nbComs = count($totalComs);
 
         //user connected at the moment
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
@@ -183,6 +184,24 @@ class AdminController extends Controller
                     }
                 }
                 $this->render('postArticle.html.twig', ['modify' => true, 'post' => $post]);
+            }
+        }
+    }
+
+    public function validateArticle()
+    {
+        $entityManager = Database::getEntityManager();
+        $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
+
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        if ($user == null) {
+            $this->render('404.html.twig');
+        } else if (isset($_SESSION)) {
+            $_SESSION["user"] = $user;
+            if ($user->isAdmin()) {
+                $this->render('validate.html.twig', ['comments' => $comments]);
+            } else {
+                $this->render('404.html.twig');
             }
         }
     }

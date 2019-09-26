@@ -50,6 +50,9 @@ try {
     } else if (rtrim($path, '/') == "/modify") {
         $controller = new AdminController();
         $controller->modifyArticle();
+    } else if (rtrim($path, '/') == "/validation") {
+        $controller = new AdminController();
+        $controller->validateArticle();
     } else {
         $controller = new PageController();
         $controller->errorPage();
