@@ -7,12 +7,12 @@
             <form action="" method="post" name="commentFrom">
                 <div class="control-group">
                     <div class="form-group">
-                        <label for="">Utilisateur : "caché pour le moment"</label>
+                        <label for="">Utilisateur : {{ user.name }}</label>
                         <input type="text" name="userName" value="{{ user.name }}" hidden>
                     </div>
                     <div class="form-group floating-label-form-group controls">
                         <label for="">Votre Commentaire</label>
-                        <textarea class="form-control" name="comment" placeholder="Votre message" id="comment" cols="20"
+                        <textarea class="form-control" name="message" placeholder="Votre message" id="comment" cols="20"
                                   rows="5"></textarea>
                     </div>
                     <div class="form-group text-center">
@@ -27,22 +27,29 @@
             <p>Merci de vous enregistrer pour avoir accés a la partie commentaire du site!</p>
         </div>
     {% endif %}
-    {% if comments %}
-        <div class="row justify-content-center border border-light p-2 m-4">
-            <div class="col-lg-6 sm">
-                <div class="row sm-6">
-                    De :
-                </div>
-                <div class="row sm-6">
-                    Le :
-                </div>
-            </div>
-            <div class="col-lg-6 sm">
-                <div class="row">
-                    Le message :
-                </div>
-            </div>
+    {% if succes %}
+        <div class="alert alert-success" role="alert">
+            Commentaire posté, en attente de validation
         </div>
+    {% endif %}
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="row justify-content-center border border-light p-2 m-4">
+                <div class="col-lg-6 sm">
+                    <div class="row sm-6">
+                        De : {{ comment.author }}
+                    </div>
+                    <div class="row sm-6">
+                        Le : {{ comment.postdate|date("d/m/Y") }}
+                    </div>
+                </div>
+                <div class="col-lg-6 sm">
+                    <div class="row">
+                        " {{ comment.message }} ,,
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     {% else %}
         <div class="row justify-content-center">
             Pas de commentaire pour le moment sur cet article

@@ -29,9 +29,9 @@ class BlogController extends Controller
         // GET EM
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
+        $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['postId' => $post->getID()], ['id' => 'DESC']);
         // If $route match with existing route
         if ($post != null) {
-            $comments = true;
             if ($_POST) {
                 if (!empty($_POST)) {
 
@@ -55,6 +55,7 @@ class BlogController extends Controller
                     exit();
                 }
             }
+
             $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments]);
 
         } else {
