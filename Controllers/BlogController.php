@@ -3,6 +3,7 @@
 
 namespace Controllers;
 
+use Entity\Comment;
 use System\Database;
 
 class BlogController extends Controller
@@ -18,24 +19,49 @@ class BlogController extends Controller
 
     public function singlePost($route)
     {
-        /**
-         * Get the post by Route
-         */
+        // Pour TEST
         if ($_SESSION == null) {
             $session = false;
         } else {
             $session = true;
         }
-        $comments = true;
+
+        // GET EM
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
+        // If $route match with existing route
         if ($post != null) {
+            $comments = true;
+            if ($_POST) {
+                if (!empty($_POST)) {
+
+                    $author = $_SESSION["user"]->getUsername();
+                    $message = $_POST['message'];
+                    $checked = 0;
+                    $postDate = time();
+                    $postId = $post->getId();
+
+                    $comment = new Comment();
+                    $comment
+                        ->setAuthor($author)
+                        ->setMessage($message)
+                        ->setChecked($checked)
+                        ->setPostdate($postDate)
+                        ->setPostId($postId);
+
+                    $entityManager->persist($comment);
+                    $entityManager->flush();
+                    $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments, 'succes' => true]);
+                    exit();
+                }
+            }
             $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments]);
 
         } else {
             $pageController = new PageController();
             $pageController->errorPage();
         }
+
     }
 
 }
