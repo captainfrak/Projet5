@@ -180,7 +180,8 @@ class AdminController extends Controller
 
                         $entityManager->persist($post);
                         $entityManager->flush();
-                        return $this->render('postArticle.html.twig', ['changes' => true, 'modify' => true, 'post' => $post]);
+                        $this->render('postArticle.html.twig', ['changes' => true, 'modify' => true, 'post' => $post]);
+                        exit();
                     }
                 }
                 $this->render('postArticle.html.twig', ['modify' => true, 'post' => $post]);
@@ -188,7 +189,7 @@ class AdminController extends Controller
         }
     }
 
-    public function validateArticle()
+    public function CommentToValidate()
     {
         $entityManager = Database::getEntityManager();
         $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
@@ -204,5 +205,44 @@ class AdminController extends Controller
                 $this->render('404.html.twig');
             }
         }
+    }
+
+    public function validateComment()
+    {
+        /**
+         * Get the Id of the comment
+         */
+        $url = explode('?', $_SERVER['REQUEST_URI'], 0)[0];
+        $character_mask = "/validate?";
+        $id = ltrim($url, $character_mask);
+
+        /**
+         * getting the entity manager
+         */
+        $entityManager = Database::getEntityManager();
+        $comment = $entityManager->getRepository('Entity\\comment')->find($id);
+
+        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        if ($user == null) {
+            $this->render('404.html.twig');
+        } else if (isset($_SESSION)) {
+            $_SESSION["user"] = $user;
+            if ($user->isAdmin()) {
+                $checked = 1;
+                $comment->setChecked($checked);
+                $entityManager->persist($comment);
+                $entityManager->flush();
+
+                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
+                $this->render('validate.html.twig', ['comments' => $comments, 'success' => true]);
+            } else {
+                $this->render('404.html.twig');
+            }
+        }
+    }
+
+    public function deleteComment()
+    {
+
     }
 }

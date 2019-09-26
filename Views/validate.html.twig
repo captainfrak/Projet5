@@ -60,7 +60,11 @@
             <h1 class="w-100 mb-4 text-center">Gestion des commentaires</h1>
             <div class="row justify-content-center">
                 <div class="col">
-
+                    {% if success %}
+                        <div class="alert alert-success">
+                            Le commentaire a bien été validé
+                        </div>
+                    {% endif %}
                     {% for comment in comments %}
                         <div class="card text-center dark mb-3">
                             <div class="card-header">
@@ -71,11 +75,14 @@
                                 <p class="card-text">{{ comment.message }}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="/validation?{{ comment.id }}"><button class="btn btn-success"><i class="fas fa-check"></i></button></a>
+                                <a href="/validate?{{ comment.id }}">
+                                    <button class="btn btn-success"><i class="fas fa-check"></i></button>
+                                </a>
                                 <a href="/delete?{{ comment.id }}"><button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></a>
                             </div>
                         </div>
                     {% endfor %}
+                </div>
             </div>
         </div>
     </div>
