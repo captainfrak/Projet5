@@ -19,7 +19,8 @@ class PageController extends Controller
             $headers = "From: noreply@sylvainsaez.fr";
             $headers .= "Reply-To: $email";
             mail($to, $email_subject, $email_body, $headers);
-            return $this->render('index.html.twig', ['post' => true]);
+            $this->render('index.html.twig', ['post' => true]);
+            exit();
         }
         $this->render('index.html.twig');
     }
