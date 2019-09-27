@@ -35,7 +35,7 @@
                     </li>
                     {% if user %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin">Administration</a>
+                            <a class="nav-link" href="/admin/admin">Administration</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Deconnexion</a>
@@ -81,10 +81,12 @@
                                 <p class="card-text">{{ comment.message }}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="/validate?{{ comment.id }}">
+                                <a href="/admin/validate?{{ comment.id }}">
                                     <button class="btn btn-success"><i class="fas fa-check"></i></button>
                                 </a>
-                                <a href="/delete?{{ comment.id }}"><button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></a>
+                                <a href="/admin/delete?{{ comment.id }}">
+                                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                </a>
                             </div>
                         </div>
                     {% endfor %}

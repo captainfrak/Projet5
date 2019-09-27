@@ -26,16 +26,16 @@ try {
     } else if (rtrim($path, '/') == "/login") {
         $controller = new UserController();
         $controller->loginPage();
-    } else if (rtrim($path, '/') == "/admin") {
+    } else if (rtrim($path, '/') == "/admin/admin") {
         $controller = new AdminController();
         $controller->adminPage();
-    } else if (rtrim($path, '/') == "/listarticle") {
+    } else if (rtrim($path, '/') == "/admin/listarticle") {
         $controller = new AdminController();
         $controller->listArticle();
     } else if (rtrim($path, '/') == "/register") {
         $controller = new UserController();
         $controller->registerPage();
-    } else if (rtrim($path, '/') == "/postarticle") {
+    } else if (rtrim($path, '/') == "/admin/postarticle") {
         $controller = new AdminController();
         $controller->postArticlePage();
     } else if (preg_match($regex, $path, $result_matches)) {
@@ -44,19 +44,19 @@ try {
     } else if (rtrim($path, '/') == "/logout") {
         $controller = new PageController();
         $controller->logout();
-    } else if (rtrim($path, '/') == "/erase") {
+    } else if (rtrim($path, '/') == "/admin/erase") {
         $controller = new AdminController();
         $controller->eraseArticle();
-    } else if (rtrim($path, '/') == "/modify") {
+    } else if (rtrim($path, '/') == "/admin/modify") {
         $controller = new AdminController();
         $controller->modifyArticle();
-    } else if (rtrim($path, '/') == "/validation") {
+    } else if (rtrim($path, '/') == "/admin/validation") {
         $controller = new AdminController();
         $controller->CommentToValidate();
-    } else if (rtrim($path, '/') == "/validate") {
+    } else if (rtrim($path, '/') == "/admin/validate") {
         $controller = new AdminController();
         $controller->validateComment();
-    } else if (rtrim($path, '/') == "/delete") {
+    } else if (rtrim($path, '/') == "/admin/delete") {
         $controller = new AdminController();
         $controller->deleteComment();
     } else {
