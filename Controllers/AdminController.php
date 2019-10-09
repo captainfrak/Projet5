@@ -17,6 +17,7 @@ class AdminController extends Controller
         $nbPosts = count($totalPosts);
         $nbUsers = count($totalUsers);
         $nbComs = count($totalComs);
+        $posts = self::getPostRepository()->findBy([], ['id' => 'DESC'], 5);
 
         //user connected at the moment
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
@@ -25,7 +26,7 @@ class AdminController extends Controller
         } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
-                $this->render('admin.html.twig', ['nbUsers' => $nbUsers, 'nbPosts' => $nbPosts, 'nbComs' => $nbComs]);
+                $this->render('admin.html.twig', ['nbUsers' => $nbUsers, 'nbPosts' => $nbPosts, 'nbComs' => $nbComs, 'posts' => $posts]);
             } else {
                 $this->render('404.html.twig');
             }
