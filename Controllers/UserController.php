@@ -32,7 +32,6 @@ class UserController extends Controller
                 }
             } elseif (!empty($_POST['email']) && empty($_POST['password'])) {
                 return $this->render('login.html.twig', ['mdp' => true]);
-
             } elseif (empty($_POST['email']) && !empty($_POST['password'])) {
                 return $this->render('login.html.twig', ['email' => true]);
             } elseif (empty($_POST['email']) && empty($_POST['password'])) {
@@ -47,7 +46,6 @@ class UserController extends Controller
         $errors = [];
         if ($_POST) {
             if (!empty($_POST)) {
-
                 $entityManager = Database::getEntityManager();
 
                 $name = htmlentities(htmlspecialchars($_POST['name']));
@@ -69,7 +67,6 @@ class UserController extends Controller
                 $entityManager->persist($user);
                 $entityManager->flush();
                 return $this->render('register.html.twig', ['submit' => true, 'user' => $user]);
-
             } else {
                 $errors = ['emptyForm' => true];
             }

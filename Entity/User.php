@@ -1,6 +1,7 @@
 <?php
 
 namespace Entity;
+
 /**
  * @Entity @Table(name="user")
  **/

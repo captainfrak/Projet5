@@ -3,7 +3,6 @@
 
 namespace System;
 
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\Tools\Setup;
@@ -16,7 +15,6 @@ class Database
     public static function getEntityManager(): ?EntityManager
     {
         if (self::$entityManager === null) {
-
             $path = [__DIR__ . "/" . "../Entity"];
             $isDevMode = true;
 

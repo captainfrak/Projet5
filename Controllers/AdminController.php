@@ -22,7 +22,7 @@ class AdminController extends Controller
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
             $this->render('404.html.twig');
-        } else if (isset($_SESSION)) {
+        } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
                 $this->render('admin.html.twig', ['nbUsers' => $nbUsers, 'nbPosts' => $nbPosts, 'nbComs' => $nbComs]);
@@ -40,11 +40,10 @@ class AdminController extends Controller
             $_SESSION["user"] = $user;
             if ($user == null) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() == 26) {
+            } elseif ($user->getRole() == 26) {
                 $errors = [];
                 if ($_POST) {
                     if (!empty($_POST)) {
-
                         $entityManager = Database::getEntityManager();
 
                         $title = $_POST['title'];
@@ -60,7 +59,6 @@ class AdminController extends Controller
                             $this->render('postArticle.html.twig', ['double' => true]);
                             exit();
                         } else {
-
                             $post = new Post();
                             $post
                                 ->setTitle($title)
@@ -78,7 +76,7 @@ class AdminController extends Controller
                     }
                 }
                 $this->render('postArticle.html.twig', $errors);
-            } else if ($user->getRole() != 26) {
+            } elseif ($user->getRole() != 26) {
                 $this->render('404.html.twig');
             }
         }
@@ -89,9 +87,7 @@ class AdminController extends Controller
         /**
          * Get the Id of the post
          */
-        $url = explode('?', $_SERVER['REQUEST_URI'], 0)[0];
-        $character_mask = "/erase?";
-        $id = ltrim($url, $character_mask);
+        $id = (int)$_GET['postId'];
 
         /**
          * getting the entity manager
@@ -104,9 +100,9 @@ class AdminController extends Controller
             $_SESSION["user"] = $user;
             if ($user == null) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() != 26) {
+            } elseif ($user->getRole() != 26) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() == 26) {
+            } elseif ($user->getRole() == 26) {
                 $post = $entityManager->getRepository('Entity\\Post')->find($id);
                 $entityManager->remove($post);
                 $entityManager->flush();
@@ -124,9 +120,9 @@ class AdminController extends Controller
             $_SESSION["user"] = $user;
             if ($user == null) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() != 26) {
+            } elseif ($user->getRole() != 26) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() == 26) {
+            } elseif ($user->getRole() == 26) {
                 $entityManager = Database::getEntityManager();
                 $posts = $entityManager->getRepository('Entity\\Post')->findBy([], ['id' => 'DESC']);
 
@@ -141,9 +137,7 @@ class AdminController extends Controller
         /**
          * Get the Id of the post
          */
-        $url = explode('?', $_SERVER['REQUEST_URI'], 0)[0];
-        $character_mask = "/modify?";
-        $id = ltrim($url, $character_mask);
+        $id = (int)$_GET['postId'];
 
         /**
          * getting the entity manager
@@ -157,12 +151,11 @@ class AdminController extends Controller
             $_SESSION["user"] = $user;
             if ($user == null) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() != 26) {
+            } elseif ($user->getRole() != 26) {
                 $this->render('404.html.twig');
-            } else if ($user->getRole() == 26) {
+            } elseif ($user->getRole() == 26) {
                 if ($_POST) {
                     if (!empty($_POST)) {
-
                         $entityManager = Database::getEntityManager();
 
                         $title = $_POST['title'];
@@ -191,7 +184,7 @@ class AdminController extends Controller
         }
     }
 
-    public function CommentToValidate()
+    public function commentToValidate()
     {
         $entityManager = Database::getEntityManager();
         $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
@@ -199,7 +192,7 @@ class AdminController extends Controller
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
             $this->render('404.html.twig');
-        } else if (isset($_SESSION)) {
+        } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
                 $this->render('validate.html.twig', ['comments' => $comments]);
@@ -214,20 +207,18 @@ class AdminController extends Controller
         /**
          * Get the Id of the comment
          */
-        $url = explode('?', $_SERVER['REQUEST_URI'], 0)[0];
-        $character_mask = "/validate?";
-        $id = ltrim($url, $character_mask);
+        $id = (int)$_GET['commentId'];
 
         /**
          * getting the entity manager
          */
         $entityManager = Database::getEntityManager();
-        $comment = $entityManager->getRepository('Entity\\comment')->find($id);
+        $comment = $entityManager->getRepository('Entity\\comment')->findOneBy(['id' => $id]);
 
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
             $this->render('404.html.twig');
-        } else if (isset($_SESSION)) {
+        } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
                 $checked = 1;
@@ -235,7 +226,10 @@ class AdminController extends Controller
                 $entityManager->persist($comment);
                 $entityManager->flush();
 
-                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
+                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
+                    ['checked' => 0],
+                    ['id' => 'DESC']
+                );
                 $this->render('validate.html.twig', ['comments' => $comments, 'success' => true]);
             } else {
                 $this->render('404.html.twig');
@@ -248,9 +242,7 @@ class AdminController extends Controller
         /**
          * Get the Id of the comment
          */
-        $url = explode('?', $_SERVER['REQUEST_URI'], 0)[0];
-        $character_mask = "/delete?";
-        $id = ltrim($url, $character_mask);
+        $id = (int)$_GET['commentId'];
 
         /**
          * getting the entity manager
@@ -261,13 +253,16 @@ class AdminController extends Controller
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
             $this->render('404.html.twig');
-        } else if (isset($_SESSION)) {
+        } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
                 $entityManager->remove($comment);
                 $entityManager->flush();
 
-                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(['checked' => 0], ['id' => 'DESC']);
+                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
+                    ['checked' => 0],
+                    ['id' => 'DESC']
+                );
                 $this->render('validate.html.twig', ['comments' => $comments, 'remove' => true]);
             } else {
                 $this->render('404.html.twig');

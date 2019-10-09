@@ -20,43 +20,43 @@ try {
     if ($path == "/") {
         $controller = new PageController();
         $controller->homePage();
-    } else if (rtrim($path, '/') == "/blog") {
+    } elseif (rtrim($path, '/') == "/blog") {
         $controller = new BlogController();
         $controller->blog();
-    } else if (rtrim($path, '/') == "/login") {
+    } elseif (rtrim($path, '/') == "/login") {
         $controller = new UserController();
         $controller->loginPage();
-    } else if (rtrim($path, '/') == "/admin/admin") {
+    } elseif (rtrim($path, '/') == "/admin/admin") {
         $controller = new AdminController();
         $controller->adminPage();
-    } else if (rtrim($path, '/') == "/admin/listarticle") {
+    } elseif (rtrim($path, '/') == "/admin/listarticle") {
         $controller = new AdminController();
         $controller->listArticle();
-    } else if (rtrim($path, '/') == "/register") {
+    } elseif (rtrim($path, '/') == "/register") {
         $controller = new UserController();
         $controller->registerPage();
-    } else if (rtrim($path, '/') == "/admin/postarticle") {
+    } elseif (rtrim($path, '/') == "/admin/postarticle") {
         $controller = new AdminController();
         $controller->postArticlePage();
-    } else if (preg_match($regex, $path, $result_matches)) {
+    } elseif (preg_match($regex, $path, $result_matches)) {
         $controller = new BlogController();
         $controller->singlePost($result_matches[1]);
-    } else if (rtrim($path, '/') == "/logout") {
+    } elseif (rtrim($path, '/') == "/logout") {
         $controller = new PageController();
         $controller->logout();
-    } else if (rtrim($path, '/') == "/admin/erase") {
+    } elseif (rtrim($path, '/') == "/admin/erase") {
         $controller = new AdminController();
         $controller->eraseArticle();
-    } else if (rtrim($path, '/') == "/admin/modify") {
+    } elseif (rtrim($path, '/') == "/admin/modify") {
         $controller = new AdminController();
         $controller->modifyArticle();
-    } else if (rtrim($path, '/') == "/admin/validation") {
+    } elseif (rtrim($path, '/') == "/admin/validation") {
         $controller = new AdminController();
-        $controller->CommentToValidate();
-    } else if (rtrim($path, '/') == "/admin/validate") {
+        $controller->commentToValidate();
+    } elseif (rtrim($path, '/') == "/admin/validate") {
         $controller = new AdminController();
         $controller->validateComment();
-    } else if (rtrim($path, '/') == "/admin/delete") {
+    } elseif (rtrim($path, '/') == "/admin/delete") {
         $controller = new AdminController();
         $controller->deleteComment();
     } else {

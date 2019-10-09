@@ -3,6 +3,12 @@
 
 namespace Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+
 /**
  * @Entity @Table(name="comment")
  **/
@@ -16,33 +22,33 @@ class Comment
 
     /**
      * @var string $author
-     * @author @Column(type="string")
+     * @Column(type="string")
      */
     protected $author;
 
     /**
      * @var string $message
-     * @message @Column(type="string")
+     * @Column(type="string")
      */
     protected $message;
 
     /**
      * @var integer $checked
-     * @check @Column(type="integer")
+     * @Column(type="integer")
      */
     protected $checked;
 
     /**
      * @var integer $postdate
-     * @postdate @Column(type="integer")
+     * @Column(type="integer")
      */
     protected $postdate;
 
     /**
-     * @var integer $postId
-     * @postId @Column(type="integer")
+     * @ManyToOne(targetEntity="Post")
+     * @JoinColumn(name="post_id", referencedColumnName="id")
      */
-    protected $postId;
+    protected $post;
 
     /**
      * @return int
@@ -125,20 +131,19 @@ class Comment
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getPostId(): int
+    public function getPost()
     {
-        return $this->postId;
+        return $this->post;
     }
 
     /**
-     * @param int $postId
-     * @return Comment
+     * @param mixed $post
      */
-    public function setPostId(int $postId): Comment
+    public function setPost($post): Comment
     {
-        $this->postId = $postId;
+        $this->post = $post;
         return $this;
     }
 }
