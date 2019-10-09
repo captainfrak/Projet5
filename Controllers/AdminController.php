@@ -26,7 +26,13 @@ class AdminController extends Controller
         } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
-                $this->render('admin.html.twig', ['nbUsers' => $nbUsers, 'nbPosts' => $nbPosts, 'nbComs' => $nbComs, 'posts' => $posts]);
+                $this->render(
+                    'admin.html.twig',
+                    ['nbUsers' => $nbUsers,
+                        'nbPosts' => $nbPosts,
+                        'nbComs' => $nbComs,
+                        'posts' => $posts]
+                );
             } else {
                 $this->render('404.html.twig');
             }
