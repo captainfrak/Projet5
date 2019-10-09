@@ -73,7 +73,7 @@
                     {% for comment in comments %}
                         <div class="card text-center dark mb-3">
                             <div class="card-header">
-                                Dans : {{ comment.postId }}
+                                Dans : {{ comment.post.title }}
                             </div>
                             <div class="card-body">
                                 <h6 class="card-title">De : {{ comment.author }} || Le
@@ -81,10 +81,10 @@
                                 <p class="card-text">{{ comment.message }}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="/admin/validate?{{ comment.id }}">
+                                <a href="/admin/validate?commentId={{ comment.id }}">
                                     <button class="btn btn-success"><i class="fas fa-check"></i></button>
                                 </a>
-                                <a href="/admin/delete?{{ comment.id }}">
+                                <a href="/admin/delete?commentId={{ comment.id }}">
                                     <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
                                 </a>
                             </div>
