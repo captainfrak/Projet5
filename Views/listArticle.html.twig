@@ -59,9 +59,17 @@
 
     <div class="container">
         <div class="row justify-content-center">
-            <h1 class="w-100 text-center">Gestion des articles</h1>
+            <h1 class="w-100 text-center p-2">Gestion des articles</h1>
             <div class="row justify-content-center">
-                <div class="col">
+                <div class="col-lg-3 mb-3" id="sidebar">
+                    <br>
+                    <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
+                    <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
+                    <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
+                    <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
+                    <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
+                </div>
+                <div class="col-lg-8 col-md-8 m-4">
                     <table class="table table-striped table-dark">
                         <thead class="thead-dark">
                         <tr>
