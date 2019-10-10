@@ -13,6 +13,7 @@ abstract class Controller
     private $twig;
     private static $userRepository = null;
     private static $postRepository = null;
+    private static $comsRepository = null;
 
     public function __construct()
     {
@@ -47,5 +48,14 @@ abstract class Controller
                 ->getRepository("Entity\\Post");
         }
         return self::$postRepository;
+    }
+
+    protected static function getComsRepository()
+    {
+        if (self::$comsRepository == null) {
+            self::$comsRepository = self::getEntityManager()
+                ->getRepository("Entity\\Comment");
+        }
+        return self::$comsRepository;
     }
 }

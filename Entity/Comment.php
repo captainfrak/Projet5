@@ -3,10 +3,16 @@
 
 namespace Entity;
 
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
+
 /**
  * @Entity @Table(name="comment")
  **/
-class Comments
+class Comment
 {
     /**
      * @var integer $id
@@ -16,27 +22,33 @@ class Comments
 
     /**
      * @var string $author
-     * @author @Column(type="string")
+     * @Column(type="string")
      */
     protected $author;
 
     /**
      * @var string $message
-     * @message @Column(type="string")
+     * @Column(type="string")
      */
     protected $message;
 
     /**
      * @var integer $checked
-     * @check @Column(type="integer")
+     * @Column(type="integer")
      */
     protected $checked;
 
     /**
      * @var integer $postdate
-     * @postdate @Column(type="integer")
+     * @Column(type="integer")
      */
     protected $postdate;
+
+    /**
+     * @ManyToOne(targetEntity="Post")
+     * @JoinColumn(name="post_id", referencedColumnName="id")
+     */
+    protected $post;
 
     /**
      * @return int
@@ -56,9 +68,9 @@ class Comments
 
     /**
      * @param string $author
-     * @return Comments
+     * @return Comment
      */
-    public function setAuthor(string $author): Comments
+    public function setAuthor(string $author): Comment
     {
         $this->author = $author;
         return $this;
@@ -74,9 +86,9 @@ class Comments
 
     /**
      * @param string $message
-     * @return Comments
+     * @return Comment
      */
-    public function setMessage(string $message): Comments
+    public function setMessage(string $message): Comment
     {
         $this->message = $message;
         return $this;
@@ -92,9 +104,9 @@ class Comments
 
     /**
      * @param int $postdate
-     * @return Comments
+     * @return Comment
      */
-    public function setPostdate(int $postdate): Comments
+    public function setPostdate(int $postdate): Comment
     {
         $this->postdate = $postdate;
         return $this;
@@ -110,11 +122,28 @@ class Comments
 
     /**
      * @param int $checked
-     * @return Comments
+     * @return Comment
      */
-    public function setChecked(int $checked): Comments
+    public function setChecked(int $checked): Comment
     {
         $this->checked = $checked;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @param mixed $post
+     */
+    public function setPost($post): Comment
+    {
+        $this->post = $post;
         return $this;
     }
 }

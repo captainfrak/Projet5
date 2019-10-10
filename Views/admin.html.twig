@@ -1,6 +1,6 @@
 {% extends "index.html.twig" %}
 
-{% block title %}Adminiastration{% endblock %}
+{% block title %}Administration{% endblock %}
 
 {% block cssblock %}
     <!-- Bootstrap core CSS -->
@@ -34,7 +34,7 @@
                     </li>
                     {% if user %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin">Administration</a>
+                            <a class="nav-link" href="/admin/admin">Administration</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Deconnexion</a>
@@ -55,7 +55,7 @@
 
 
 {% block body %}
-<div class="container-fluid">
+    <div class="container">
     <div class="row">
         <div class="col">
             <h1>Administration</h1>
@@ -65,21 +65,19 @@
     <div class="row" id="main">
         <div class="col-lg-3 col-md-3" id="sidebar">
             <br>
-            <a href="/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
-            <a href="/postarticle" class="btn btn-dark btn-block">Publier un article</a>
-            <a href="postarticle.html" class="btn btn-dark btn-block">Validation commentaires</a>
+            <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
+            <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
+            <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
             <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
             <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
-
-
         </div>
-        <div class="col-lg-9 col-md-9 mx-auto" id="dashboard">
+        <div class="col-lg-8 col-md-8 m-4" id="dashboard">
             <div class="row">
                 <div class="col">
                     <h2>Le Blog en chiffres :</h2>
                 </div>
             </div>
-            <div class="row text-center justify-content-around">
+            <div class="row text-center justify-content-around p-4">
                 <div class="col-3 border border-dark rounded">
                     <h6>Nb users :</h6>
                     <span>{{ nbUsers }}</span>
@@ -108,17 +106,19 @@
                     <th>Supprimer</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr class="text-center">
-                    <th>3</th>
-                    <th>Troisième Post</th>
-                    <th>Frak</th>
-                    <th>18/08/2019</th>
-                    <th></th>
-                    <th><a href="/modify?{{ post.id }}"><i class="far fa-edit"></i></a></i></th>
-                    <th><a href="/erase?{{ post.id }}"><i class="fas fa-trash-alt"></i></a></i></th>
-                </tr>
-                </tbody>
+                {% for post in posts %}
+                    <tbody>
+                    <tr class="text-center">
+                        <th>{{ post.id }}</th>
+                        <th>{{ post.title }}</th>
+                        <th>{{ post.author }}</th>
+                        <th>{{ post.dateCreation|date("d/m/Y") }}</th>
+                        <th></th>
+                        <th><a href="/admin/modify?postId={{ post.id }}"><i class="far fa-edit"></i></a></i></th>
+                        <th><a href="/admin/erase?postId={{ post.id }}"><i class="fas fa-trash-alt"></i></a></i></th>
+                    </tr>
+                    </tbody>
+                {% endfor %}
             </table>
         </div>
     </div>

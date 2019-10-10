@@ -2,6 +2,10 @@
 
 namespace Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\Id;
+
 /**
  * @Entity @Table(name="post")
  **/
@@ -48,6 +52,11 @@ class Post
      * @route @Column(type="string")
      */
     protected $route;
+
+    /**
+     * OneToMany(targetEntity="Comment", mappedBy="post", orphanRemoval="true")
+     */
+    private $comments;
 
     /**
      * @return int
@@ -165,4 +174,8 @@ class Post
         return $this;
     }
 
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 }

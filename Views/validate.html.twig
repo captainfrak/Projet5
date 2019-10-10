@@ -1,6 +1,6 @@
 {% extends "index.html.twig" %}
 
-{% block title %}Gestion des articles{% endblock %}
+{% block title %}Validation des commentaires{% endblock %}
 
 {% block cssblock %}
     <!-- Bootstrap core CSS -->
@@ -54,52 +54,51 @@
 {% block header %}
 {% endblock %}
 
-
 {% block body %}
-
     <div class="container">
         <div class="row justify-content-center">
-            <h1 class="w-100 text-center p-2">Gestion des articles</h1>
-            <div class="row justify-content-center">
-                <div class="col-lg-3 mb-3" id="sidebar">
-                    <br>
-                    <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
-                    <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
-                    <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
-                    <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
-                    <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
-                </div>
-                <div class="col-lg-8 col-md-8 m-4">
-                    <table class="table table-striped table-dark">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Titre</th>
-                            <th>Auteur</th>
-                            <th>Date de publication</th>
-                            <th></th>
-                            <th>Modifier</th>
-                            <th>Supprimer</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for post in posts %}
-                            <tr class="text-center">
-                                <th>{{ post.id }}</th>
-                                <th>{{ post.title }}</th>
-                                <th>{{ post.author }}</th>
-                                <th>{{ post.dateCreation|date("m/d/Y") }}</th>
-                                <th></th>
-                                <th><a href="/admin/modify?postId={{ post.id }}"><i class="far fa-edit"></i></a></th>
-                                <th><a href="/admin/erase?postId={{ post.id }}"><i class="fas fa-trash-alt"></i></a>
-                                </th>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
+            <h1 class="w-100 mb-4 text-center">Gestion des commentaires</h1>
 
-                </div>
+            <div class="col-lg-3 mb-3" id="sidebar">
+                <br>
+                <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
+                <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
+                <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
+                <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
+                <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
             </div>
+            <div class="col-lg-8 col-md-8 m-4">
+                    {% if success %}
+                        <div class="alert alert-success">
+                            Le commentaire a bien été validé
+                        </div>
+                    {% endif %}
+                    {% if remove %}
+                        <div class="alert alert-info">
+                            Le commentaire a bien été supprimé
+                        </div>
+                    {% endif %}
+                    {% for comment in comments %}
+                        <div class="card text-center dark mb-3">
+                            <div class="card-header">
+                                Dans : {{ comment.post.title }}
+                            </div>
+                            <div class="card-body">
+                                <h6 class="card-title">De : {{ comment.author }} || Le
+                                    : {{ comment.dateCreation|date("d/m/Y") }} </h6>
+                                <p class="card-text">{{ comment.message }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="/admin/validate?commentId={{ comment.id }}">
+                                    <button class="btn btn-success"><i class="fas fa-check"></i></button>
+                                </a>
+                                <a href="/admin/delete?commentId={{ comment.id }}">
+                                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
         </div>
     </div>
 {% endblock %}

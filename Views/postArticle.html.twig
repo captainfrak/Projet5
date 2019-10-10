@@ -35,7 +35,7 @@
                     </li>
                     {% if user %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin">Administration</a>
+                            <a class="nav-link" href="/admin/admin">Administration</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Deconnexion</a>
@@ -54,13 +54,8 @@
 {% block header %}
 {% endblock %}
 
-
 {% block body %}
-
 <div class="container">
-    <div class="row justify-content-center">
-        <h1>Nouvel Article</h1>
-    </div>
     {% if  submit %}
         <div class="row justify-content-center">
             <div class="alert alert-success">
@@ -86,74 +81,97 @@
             </div>
         </div>
     {% endif %}
-    {% if modify %}
-        <div class="row justify-content-center">
-            <form action="" name="postarticle" method="post">
-                <div class="control-group">
-                    <div class="form-group">
-                        <label for="">Titre de l'article :</label>
-                        <input type="text" name="title" value="{{ post.title }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Chapo de l'article :</label>
-                        <input type="text" name="chapo" value="{{ post.chapo }}">
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <textarea id="content" type="textarea" name="content"
-                                      placeholder="contenu de l'article">{{ post.contentText }}</textarea>
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Auteur :</label>
-                        <select name="author" id="">
-                            <option value="Frak">Frak</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Route de l'article :</label>
-                        <input type="text" name="route" value="{{ post.route }}">
-                    </div>
-                    <hr>
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-info" id="loginButton">Publié la modification</button>
-                    </div>
-                </div>
-            </form>
+    <div class="row justify-content-center">
+        <div class="col-lg-3 col-md-3 mt-5" id="sidebar">
+            <br>
+            <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
+            <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
+            <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
+            <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
+            <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
         </div>
-    {% else %}
-        <div class="row justify-content-center">
-            <form action="" name="postarticle" method="post">
-                <div class="control-group">
-                    <div class="form-group">
-                        <label for="">Titre de l'article :</label>
-                        <input type="text" name="title" placeholder="Titre de l'article">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Chapo de l'article :</label>
-                        <input type="text" name="chapo" placeholder="Chapo de l'article">
-                    </div>
-                    <div class="form-group">
-                        <input type="textarea" name="content" placeholder="Titre de l'article">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Auteur :</label>
-                        <select name="author" id="">
-                            <option value="Frak">Frak</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="">Route de l'article :</label>
-                        <input type="text" name="route" placeholder="route de l'article">
-                    </div>
-                    <hr>
-                    <div class="form-group text-center">
-                        <button type="submit" class="btn btn-primary" id="loginButton">Publier l'article</button>
-                    </div>
+        <div class="col-lg-8 col-md-8 mx-auto">
+            <div class="row justify-content-center">
+                <div class="col-9 text-center">
+                    {% if modify %}
+                        <h1>Modifier votre article</h1>
+                    {% else %}
+                        <h1>Nouvel Article</h1>
+                    {% endif %}
                 </div>
-            </form>
+                {% if modify %}
+                    <div class="row justify-content-center">
+                        <form action="" name="postarticle" method="post">
+                            <div class="control-group">
+                                <div class="form-group">
+                                    <label for="title">Titre de l'article :</label>
+                                    <input id="title" type="text" name="title" value="{{ post.title }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="chapo">Chapo de l'article :</label>
+                                    <input id="chapo" type="text" name="chapo" value="{{ post.chapo }}">
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        <textarea id="content" type="textarea" name="content"
+                                                  placeholder="contenu de l'article">{{ post.contentText }}</textarea>
+                                    </label>
+                                </div>
+                                <div class="form-group">
+                                    <label for="author">Auteur :</label>
+                                    <select name="author" id="author">
+                                        <option value="Frak">Frak</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="route">Route de l'article :</label>
+                                    <input id="route" type="text" name="route" value="{{ post.route }}">
+                                </div>
+                                <hr>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-info" id="loginButton">Publié la modification
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div class="row justify-content-center">
+                        <form action="" name="postarticle" method="post">
+                            <div class="control-group">
+                                <div class="form-group">
+                                    <label for="title">Titre de l'article :</label>
+                                    <input id="title" type="text" name="title" placeholder="Titre de l'article">
+                                </div>
+                                <div class="form-group">
+                                    <label for="chapo">Chapo de l'article :</label>
+                                    <input id="chapo" type="text" name="chapo" placeholder="Chapo de l'article">
+                                </div>
+                                <div class="form-group">
+                                    <textarea name="content" id="content"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="author">Auteur :</label>
+                                    <select name="author" id="author">
+                                        <option value="Frak">Frak</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="route">Route de l'article :</label>
+                                    <input id="route" type="text" name="route" placeholder="route de l'article">
+                                </div>
+                                <hr>
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary" id="loginButton">Publier l'article
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
         </div>
-    {% endif %}
+    </div>
 
     <script>
         CKEDITOR.replace('content');
