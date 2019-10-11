@@ -1,8 +1,28 @@
 <?php
+/**
+ * Entity for Users
+ *
+ * PHP Version 7.+
+ *
+ * @category  Entity
+ * @package   Entity
+ * @author    Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @copyright 2019 Frakdev
+ * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link      sylvainsaez.fr
+ */
 
 namespace Entity;
 
 /**
+ * Entity for the users used in the blog
+ *
+ * @category Entity
+ * @package  Entity
+ * @author   Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     sylvainsaez.fr
+ *
  * @Entity @Table(name="user")
  **/
 class User
@@ -10,48 +30,64 @@ class User
     private static $ADMIN_ROLE_ID = 26;
 
     /**
+     * Unique Id of the user
+     *
      * @var integer $id
-     * @id @Column(type="integer") @GeneratedValue
+     * @id  @Column(type="integer") @GeneratedValue
      */
     private $id;
 
     /**
-     * @var string $username
+     * Username of the user
+     *
+     * @var      string $username
      * @username @Column(type="string")
      */
     private $username;
 
     /**
-     * @var string name
+     * Name of the user
+     *
+     * @var  string name
      * @name @Column(type="string")
      */
     private $name;
 
     /**
-     * @var string $firstName
+     * Firstname of the user
+     *
+     * @var       string $firstName
      * @firstName @Column(type="string")
      */
     private $firstName;
 
     /**
-     * @var string $email
+     * Email of the user
+     *
+     * @var   string $email
      * @email @Column(type="string")
      */
     private $email;
 
     /**
-     * @var string $password
+     * Password of the user
+     *
+     * @var      string $password
      * @password @Column(type="string")
      */
     private $password;
 
     /**
-     * @var int $role
+     * Role of the user
+     *
+     * @var  int $role
      * @role @column(type="integer")
      */
     private $role;
 
     /**
+     * Get the user id
+     *
      * @return int
      */
     public function getId(): int
@@ -60,6 +96,8 @@ class User
     }
 
     /**
+     * Get the user username
+     *
      * @return string
      */
     public function getUsername(): string
@@ -68,7 +106,10 @@ class User
     }
 
     /**
-     * @param string $username
+     * Set the user username
+     *
+     * @param string $username nickname
+     *
      * @return User
      */
     public function setUsername(string $username): User
@@ -78,6 +119,8 @@ class User
     }
 
     /**
+     * Get the user email
+     *
      * @return string
      */
     public function getEmail(): string
@@ -86,7 +129,10 @@ class User
     }
 
     /**
-     * @param string $email
+     * Set the user email
+     *
+     * @param string $email email
+     *
      * @return User
      */
     public function setEmail(string $email): User
@@ -96,6 +142,8 @@ class User
     }
 
     /**
+     * Get the password of the user
+     *
      * @return string
      */
     public function getPassword(): string
@@ -104,7 +152,10 @@ class User
     }
 
     /**
-     * @param string $password
+     * Set the password of the user
+     *
+     * @param string $password hash password
+     *
      * @return User
      */
     public function setPassword(string $password): User
@@ -114,6 +165,8 @@ class User
     }
 
     /**
+     * Get the name of the user
+     *
      * @return mixed
      */
     public function getName()
@@ -122,7 +175,10 @@ class User
     }
 
     /**
-     * @param mixed $name
+     * Set the name of the user
+     *
+     * @param mixed $name name
+     *
      * @return User
      */
     public function setName($name): User
@@ -132,6 +188,8 @@ class User
     }
 
     /**
+     * Get the first name of the user
+     *
      * @return string
      */
     public function getFirstName(): string
@@ -140,7 +198,10 @@ class User
     }
 
     /**
-     * @param string $firstName
+     * Set the first name of the user
+     *
+     * @param string $firstName firstname
+     *
      * @return User
      */
     public function setFirstName(string $firstName): User
@@ -150,6 +211,8 @@ class User
     }
 
     /**
+     * Get the role of the user
+     *
      * @return int
      */
     public function getRole(): int
@@ -158,7 +221,10 @@ class User
     }
 
     /**
-     * @param int $role
+     * Set the role of the user
+     *
+     * @param int $role admin or not
+     *
      * @return User
      */
     public function setRole(int $role): User
@@ -167,6 +233,11 @@ class User
         return $this;
     }
 
+    /**
+     * Checked if user is admin
+     *
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->role === self::$ADMIN_ROLE_ID;

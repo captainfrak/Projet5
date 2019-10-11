@@ -1,4 +1,16 @@
 <?php
+/**
+ * Router of the blog
+ *
+ * PHP Version 7.+
+ *
+ * @category  System
+ * @package   System
+ * @author    Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @copyright 2019 Frakdev
+ * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link      sylvainsaez.fr
+ */
 error_reporting(E_ALL);
 require_once __DIR__ . "/autoload.php";
 require_once __DIR__ . '/../vendor/autoload.php';
