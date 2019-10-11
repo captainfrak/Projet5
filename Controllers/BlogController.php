@@ -1,21 +1,69 @@
 <?php
-
+/**
+ * Controller for the blog pages of the blog
+ *
+ * PHP Version 7.+
+ *
+ * @category  Controllers
+ * @package   Controllers
+ * @author    Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @copyright 2019 Frakdev
+ * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link      sylvainsaez.fr
+ */
 
 namespace Controllers;
 
 use Entity\Comment;
 use System\Database;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
+/**
+ * Class BlogController
+ *
+ * @category Controllers
+ * @package  Controllers
+ * @author   Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     sylvainsaez.fr
+ */
 class BlogController extends Controller
 {
 
+    /**
+     * Render the Blog page of the site
+     *
+     * @return void
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function blog()
     {
         $entityManager = Database::getEntityManager();
-        $posts = $entityManager->getRepository('Entity\\Post')->findBy([], ['id' => 'DESC']);
+        $posts = $entityManager->getRepository('Entity\\Post')->findBy(
+            [],
+            ['id' => 'DESC']
+        );
         $this->render('blog.html.twig', ['posts' => $posts]);
     }
 
+    /**
+     * The method to rendre the single blogpost
+     *
+     * @param string $route The unique route to go to the blogpost
+     *
+     * @return void
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
     public function singlePost($route)
     {
         // Pour TEST
@@ -27,7 +75,11 @@ class BlogController extends Controller
 
         // GET EM
         $entityManager = Database::getEntityManager();
-        $post = $entityManager->getRepository('Entity\\Post')->findOneBy(array('route' => $route));
+        $post = $entityManager->getRepository('Entity\\Post')->findOneBy(
+            array(
+                'route' => $route
+            )
+        );
         $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
             ['post' => $post, 'checked' => 1],
             ['id' => 'DESC']
@@ -51,15 +103,22 @@ class BlogController extends Controller
 
                     $entityManager->persist($comment);
                     $entityManager->flush();
-                    $this->render('singlePost.html.twig', [
-                        'post' => $post,
+                    $this->render(
+                        'singlePost.html.twig',
+                        ['post' => $post,
                         'session' => $session,
                         'comments' => $comments,
-                        'succes' => true]);
+                            'succes' => true]
+                    );
                     exit();
                 }
             }
-            $this->render('singlePost.html.twig', ['post' => $post, 'session' => $session, 'comments' => $comments]);
+            $this->render(
+                'singlePost.html.twig',
+                ['post' => $post,
+                    'session' => $session,
+                    'comments' => $comments]
+            );
         } else {
             $pageController = new PageController();
             $pageController->errorPage();
