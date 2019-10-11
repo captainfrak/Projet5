@@ -104,15 +104,13 @@ class BlogController extends Controller
 
             $entityManager->persist($comment);
             $entityManager->flush();
-            // todo succes VS success, refactor view
-            // todo user instead of session
             return $this->render(
                 'singlePost.html.twig',
                 [
                     'post' => $post,
-                    'session' => $user,
+                    'user' => $user,
                     'comments' => $comments,
-                    'succes' => true
+                    'success' => true
                 ]
             );
 

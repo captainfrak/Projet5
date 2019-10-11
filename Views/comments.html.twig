@@ -1,5 +1,5 @@
 <div class="container">
-    {% if session %}
+    {% if user %}
         <div class="row justify-content-center m-2">
             <h2>Commenter l'article</h2>
         </div>
@@ -27,7 +27,7 @@
             <p>Merci de vous enregistrer pour avoir accés a la partie commentaire du site!</p>
         </div>
     {% endif %}
-    {% if succes %}
+    {% if success %}
         <div class="alert alert-success" role="alert">
             Commentaire posté, en attente de validation
         </div>
