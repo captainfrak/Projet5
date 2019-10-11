@@ -29,49 +29,49 @@ $result_matches = array();
 try {
     if ($path == "/") {
         $controller = new PageController();
-        echo $controller->homePage();
+        $controller->homePage();
     } elseif (rtrim($path, '/') == "/blog") {
         $controller = new BlogController();
-        echo $controller->blog();
+        $controller->blog();
     } elseif (rtrim($path, '/') == "/login") {
         $controller = new UserController();
-        echo $controller->loginPage();
+        $controller->loginPage();
     } elseif (rtrim($path, '/') == "/admin/admin") {
         $controller = new AdminController();
-        echo $controller->adminPage();
+        $controller->adminPage();
     } elseif (rtrim($path, '/') == "/admin/listarticle") {
         $controller = new AdminController();
-        echo $controller->listArticle();
+        $controller->listArticle();
     } elseif (rtrim($path, '/') == "/register") {
         $controller = new UserController();
-        echo $controller->registerPage();
+        $controller->registerPage();
     } elseif (rtrim($path, '/') == "/admin/postarticle") {
         $controller = new AdminController();
-        echo $controller->postArticlePage();
+        $controller->postArticlePage();
     } elseif (preg_match($regex, $path, $result_matches)) {
         $controller = new BlogController();
-        echo $controller->singlePost($result_matches[1]);
+        $controller->singlePost($result_matches[1]);
     } elseif (rtrim($path, '/') == "/logout") {
         $controller = new PageController();
-        echo $controller->logout();
+        $controller->logout();
     } elseif (rtrim($path, '/') == "/admin/erase") {
         $controller = new AdminController();
-        echo $controller->eraseArticle();
+        $controller->eraseArticle();
     } elseif (rtrim($path, '/') == "/admin/modify") {
         $controller = new AdminController();
-        echo $controller->modifyArticle();
+        $controller->modifyArticle();
     } elseif (rtrim($path, '/') == "/admin/validation") {
         $controller = new AdminController();
-        echo $controller->commentToValidate();
+        $controller->commentToValidate();
     } elseif (rtrim($path, '/') == "/admin/validate") {
         $controller = new AdminController();
-        echo $controller->validateComment();
+        $controller->validateComment();
     } elseif (rtrim($path, '/') == "/admin/delete") {
         $controller = new AdminController();
-        echo $controller->deleteComment();
+        $controller->deleteComment();
     } else {
         $controller = new PageController();
-        echo $controller->errorPage();
+        $controller->errorPage();
     }
 } catch (Throwable $e) {
     if ($_SERVER['SERVER_NAME'] == 'blog.local') {

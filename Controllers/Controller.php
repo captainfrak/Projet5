@@ -56,7 +56,7 @@ abstract class Controller
      * @param array $args arguments to load special features of the page
      *
      *
-     * @return string
+     * @return void
      * @throws RuntimeError
      * @throws SyntaxError
      *
@@ -66,7 +66,7 @@ abstract class Controller
     {
         $args['user'] = $_SESSION['user'];
 
-        return $this->twig->render($filename, $args);
+        echo $this->twig->render($filename, $args);
     }
 
     /**
