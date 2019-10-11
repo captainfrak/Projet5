@@ -35,7 +35,7 @@ class UserController extends Controller
     /**
      * Returns the Login Page For the user to log himself
      *
-     * @return void
+     * @return string
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -51,50 +51,50 @@ class UserController extends Controller
 
             if (!empty($userEmail) && !empty($userPassword)) {
                 if ($user == !$userEmail) {
-                    $this->render(
+                    return $this->render(
                         'login.html.twig',
                         ['hadToRegister' => true]
                     );
-                    exit();
+
                 } elseif ($user->getEmail() == $userEmail) {
                     if (password_verify($userPassword, $user->getPassword())) {
                         $_SESSION["user"] = $user;
-                        if ($user->getRole() == 26) {
+                        if ($user->isAdmin()) {
                             header('Location: /admin/admin');
                         } else {
-                            $this->render('index.html.twig');
-                            exit();
+                            return $this->render('index.html.twig');
+                            
                         }
                     } else {
-                        $this->render(
+                        return $this->render(
                             'login.html.twig',
                             ['checkmdp' => true]
                         );
-                        exit();
+
                     }
                 }
             } elseif (!empty($_POST['email']) && empty($_POST['password'])) {
-                $this->render('login.html.twig', ['mdp' => true]);
-                exit();
+                return $this->render('login.html.twig', ['mdp' => true]);
+                
             } elseif (empty($_POST['email']) && !empty($_POST['password'])) {
-                $this->render('login.html.twig', ['email' => true]);
-                exit();
+                return $this->render('login.html.twig', ['email' => true]);
+                
             } elseif (empty($_POST['email']) && empty($_POST['password'])) {
-                $this->render(
+                return $this->render(
                     'login.html.twig',
                     ['mdp' => true,
                         'email' => true]
                 );
-                exit();
+
             }
         }
-        $this->render('login.html.twig', $errors);
+        return $this->render('login.html.twig', $errors);
     }
 
     /**
      * Return the Page for user to register
      *
-     * @return void
+     * @return string
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
@@ -133,16 +133,16 @@ class UserController extends Controller
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $this->render(
+                return $this->render(
                     'register.html.twig',
                     ['submit' => true,
                         'user' => $user]
                 );
-                exit();
+
             } else {
                 $errors = ['emptyForm' => true];
             }
         }
-        $this->render('register.html.twig', $errors);
+        return $this->render('register.html.twig', $errors);
     }
 }

@@ -14,7 +14,10 @@
 
 namespace Controllers;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Entity\Comment;
+use Entity\User;
 use System\Database;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -35,7 +38,7 @@ class BlogController extends Controller
     /**
      * Render the Blog page of the site
      *
-     * @return void
+     * @return string
      *
      * @throws LoaderError
      * @throws RuntimeError
@@ -48,7 +51,7 @@ class BlogController extends Controller
             [],
             ['id' => 'DESC']
         );
-        $this->render('blog.html.twig', ['posts' => $posts]);
+        return $this->render('blog.html.twig', ['posts' => $posts]);
     }
 
     /**
@@ -56,22 +59,18 @@ class BlogController extends Controller
      *
      * @param string $route The unique route to go to the blogpost
      *
-     * @return void
+     * @return string
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
     public function singlePost($route)
     {
-        // Pour TEST
-        if ($_SESSION == null) {
-            $session = false;
-        } else {
-            $session = true;
-        }
+        /** @var User $user */
+        $user = $_SESSION['user'];
 
         // GET EM
         $entityManager = Database::getEntityManager();
@@ -80,48 +79,50 @@ class BlogController extends Controller
                 'route' => $route
             )
         );
+
+        if (!$post) return $this->render('404.html.twig');
+
         $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
             ['post' => $post, 'checked' => 1],
             ['id' => 'DESC']
         );
+
         // If $route match with existing route
-        if ($post != null) {
-            if ($_POST) {
-                if (!empty($_POST)) {
-                    $author = $_SESSION["user"]->getUsername();
-                    $message = $_POST['message'];
-                    $checked = 0;
-                    $postDate = time();
+        if (!empty($_POST)) {
+            $author = $_SESSION["user"]->getUsername();
+            $message = $_POST['message'];
+            $checked = 0;
+            $postDate = time();
 
-                    $comment = new Comment();
-                    $comment
-                        ->setAuthor($author)
-                        ->setMessage($message)
-                        ->setChecked($checked)
-                        ->setPostdate($postDate)
-                        ->setPost($post);
+            $comment = new Comment();
+            $comment
+                ->setAuthor($author)
+                ->setMessage($message)
+                ->setChecked($checked)
+                ->setPostdate($postDate)
+                ->setPost($post);
 
-                    $entityManager->persist($comment);
-                    $entityManager->flush();
-                    $this->render(
-                        'singlePost.html.twig',
-                        ['post' => $post,
-                        'session' => $session,
-                        'comments' => $comments,
-                            'succes' => true]
-                    );
-                    exit();
-                }
-            }
-            $this->render(
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            // todo succes VS success, refactor view
+            // todo user instead of session
+            return $this->render(
                 'singlePost.html.twig',
-                ['post' => $post,
-                    'session' => $session,
-                    'comments' => $comments]
+                [
+                    'post' => $post,
+                    'session' => $user,
+                    'comments' => $comments,
+                    'succes' => true
+                ]
             );
-        } else {
-            $pageController = new PageController();
-            $pageController->errorPage();
+
         }
+
+        return $this->render(
+            'singlePost.html.twig',
+            ['post' => $post,
+                'session' => $user,
+                'comments' => $comments]
+        );
     }
 }

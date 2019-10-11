@@ -14,8 +14,13 @@
 
 namespace Controllers;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Entity\Post;
 use System\Database;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class AdminController
@@ -31,11 +36,11 @@ class AdminController extends Controller
     /**
      * Render the admin dashboard page
      *
-     * @return void
+     * @return string
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function adminPage()
     {
@@ -49,45 +54,49 @@ class AdminController extends Controller
         $posts = self::getPostRepository()->findBy([], ['id' => 'DESC'], 5);
 
         //user connected at the moment
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
-        if ($user == null) {
-            $this->render('404.html.twig');
-        } elseif (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
+        $user = $_SESSION['user'];
+
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
             if ($user->isAdmin()) {
-                $this->render(
+                return $this->render(
                     'admin.html.twig',
                     ['nbUsers' => $nbUsers,
                         'nbPosts' => $nbPosts,
                         'nbComs' => $nbComs,
                         'posts' => $posts]
                 );
-            } else {
-                $this->render('404.html.twig');
             }
         }
+        return $this->render('404.html.twig');
     }
 
     /**
      * Render the page to write new article
      *
-     * @return void
+     * @return string
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function postArticlePage()
     {
+
+        // todo user!! toi même tu sais
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
 
+        // if (!$user) return 404...
+        // your code...
+
         if (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
+            $_SESSION["user"] = $user; // todo remove
             if ($user == null) {
-                $this->render('404.html.twig');
-            } elseif ($user->getRole() == 26) {
+                return $this->render('404.html.twig');
+            } elseif ($user->isAdmin()) {
                 $errors = [];
                 if ($_POST) {
                     if (!empty($_POST)) {
@@ -105,11 +114,11 @@ class AdminController extends Controller
                         );
 
                         if ($postRoute == !null) {
-                            $this->render(
+                            return $this->render(
                                 'postArticle.html.twig',
                                 ['double' => true]
                             );
-                            exit();
+
                         } else {
                             $post = new Post();
                             $post
@@ -122,18 +131,18 @@ class AdminController extends Controller
 
                             $entityManager->persist($post);
                             $entityManager->flush();
-                            $this->render(
+                            return $this->render(
                                 'postArticle.html.twig',
                                 ['submit' => true,
                                     'post' => $post]
                             );
-                            exit();
+
                         }
                     }
                 }
-                $this->render('postArticle.html.twig', $errors);
-            } elseif ($user->getRole() != 26) {
-                $this->render('404.html.twig');
+                return $this->render('postArticle.html.twig', $errors);
+            } elseif (!$user->isAdmin()) {
+                return $this->render('404.html.twig');
             }
         }
     }
@@ -141,13 +150,13 @@ class AdminController extends Controller
     /**
      * Method to Erase an article
      *
-     * @return void
+     * @return string
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function eraseArticle()
     {
@@ -166,14 +175,14 @@ class AdminController extends Controller
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user == null) {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             } elseif ($user->getRole() != 26) {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             } elseif ($user->getRole() == 26) {
                 $post = $entityManager->getRepository('Entity\\Post')->find($postId);
                 $entityManager->remove($post);
                 $entityManager->flush();
-                $this->listArticle();
+                return $this->listArticle();
             }
         }
     }
@@ -181,11 +190,11 @@ class AdminController extends Controller
     /**
      * Render the page with the list of all blogpost
      *
-     * @return void
+     * @return string
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function listArticle()
     {
@@ -195,9 +204,9 @@ class AdminController extends Controller
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user == null) {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             } elseif ($user->getRole() != 26) {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             } elseif ($user->getRole() == 26) {
                 $entityManager = Database::getEntityManager();
                 $posts = $entityManager->getRepository('Entity\\Post')->findBy(
@@ -205,7 +214,7 @@ class AdminController extends Controller
                     ['id' => 'DESC']
                 );
 
-                $this->render('listArticle.html.twig', ['posts' => $posts]);
+                return $this->render('listArticle.html.twig', ['posts' => $posts]);
             }
         }
     }
@@ -213,13 +222,13 @@ class AdminController extends Controller
     /**
      * Render the page to modify the article
      *
-     * @return void
+     * @return string
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function modifyArticle()
     {
@@ -240,9 +249,9 @@ class AdminController extends Controller
         if (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user == null) {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             } elseif ($user->getRole() != 26) {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             } elseif ($user->getRole() == 26) {
                 if ($_POST) {
                     if (!empty($_POST)) {
@@ -265,16 +274,16 @@ class AdminController extends Controller
 
                         $entityManager->persist($post);
                         $entityManager->flush();
-                        $this->render(
+                        return $this->render(
                             'postArticle.html.twig',
                             ['changes' => true,
                                 'modify' => true,
                                 'post' => $post]
                         );
-                        exit();
+
                     }
                 }
-                $this->render(
+                return $this->render(
                     'postArticle.html.twig',
                     ['modify' => true,
                         'post' => $post]
@@ -286,11 +295,11 @@ class AdminController extends Controller
     /**
      * Render the page where comments can be validate
      *
-     * @return void
+     * @return string
      *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function commentToValidate()
     {
@@ -302,13 +311,13 @@ class AdminController extends Controller
 
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
-            $this->render('404.html.twig');
+            return $this->render('404.html.twig');
         } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
-                $this->render('validate.html.twig', ['comments' => $comments]);
+                return $this->render('validate.html.twig', ['comments' => $comments]);
             } else {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             }
         }
     }
@@ -316,13 +325,13 @@ class AdminController extends Controller
     /**
      * Method to validate the comment in the backend
      *
-     * @return void
+     * @return string
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function validateComment()
     {
@@ -341,7 +350,7 @@ class AdminController extends Controller
 
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
-            $this->render('404.html.twig');
+            return $this->render('404.html.twig');
         } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
@@ -354,13 +363,13 @@ class AdminController extends Controller
                     ['checked' => 0],
                     ['id' => 'DESC']
                 );
-                $this->render(
+                return $this->render(
                     'validate.html.twig',
                     ['comments' => $comments,
                         'success' => true]
                 );
             } else {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             }
         }
     }
@@ -368,13 +377,13 @@ class AdminController extends Controller
     /**
      * Method to delete a comment
      *
-     * @return void
+     * @return string
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function deleteComment()
     {
@@ -391,7 +400,7 @@ class AdminController extends Controller
 
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
         if ($user == null) {
-            $this->render('404.html.twig');
+            return $this->render('404.html.twig');
         } elseif (isset($_SESSION)) {
             $_SESSION["user"] = $user;
             if ($user->isAdmin()) {
@@ -402,13 +411,13 @@ class AdminController extends Controller
                     ['checked' => 0],
                     ['id' => 'DESC']
                 );
-                $this->render(
+                return $this->render(
                     'validate.html.twig',
                     ['comments' => $comments,
                         'remove' => true]
                 );
             } else {
-                $this->render('404.html.twig');
+                return $this->render('404.html.twig');
             }
         }
     }

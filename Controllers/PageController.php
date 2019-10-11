@@ -14,6 +14,10 @@
 
 namespace Controllers;
 
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
+
 /**
  * Class PageController
  *
@@ -28,7 +32,10 @@ class PageController extends Controller
     /**
      * Render the home page and manage the contact form
      *
-     * @return void
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function homePage()
     {
@@ -46,31 +53,37 @@ class PageController extends Controller
             $headers = "From: noreply@sylvainsaez.fr";
             $headers .= "Reply-To: $email";
             mail($to, $email_subject, $email_body, $headers);
-            $this->render('index.html.twig', ['post' => true]);
-            exit();
+            return $this->render('index.html.twig', ['post' => true]);
+
         }
-        $this->render('index.html.twig');
+        return $this->render('index.html.twig');
     }
 
     /**
      * Render the 404 page for the site
      *
-     * @return void
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function errorPage()
     {
-        $this->render('404.html.twig');
+        return $this->render('404.html.twig');
     }
 
     /**
      * Destroy the session and redirect to the home page
      *
-     * @return void
+     * @return string
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function logout()
     {
         session_destroy();
         $_SESSION = null;
-        $this->homePage();
+        return $this->homePage();
     }
 }

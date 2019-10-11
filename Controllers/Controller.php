@@ -14,9 +14,14 @@
 
 namespace Controllers;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use System\Database;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
 /**
@@ -50,16 +55,18 @@ abstract class Controller
      * @param string $filename the name of the file to render
      * @param array $args arguments to load special features of the page
      *
-     * @return void
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      *
-     * @throws \Twig\Error\LoaderError
+     * @return string
+     * @throws RuntimeError
+     * @throws SyntaxError
+     *
+     * @throws LoaderError
      */
     public function render($filename, $args = array())
     {
         $args['user'] = $_SESSION['user'];
-        echo $this->twig->render($filename, $args);
+
+        return $this->twig->render($filename, $args);
     }
 
     /**
@@ -75,7 +82,7 @@ abstract class Controller
     /**
      * Method to get the userRepository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|null
+     * @return ObjectRepository|EntityRepository|null
      */
     protected static function getUserRepository()
     {
@@ -89,7 +96,7 @@ abstract class Controller
     /**
      * Method to get the postRepository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|null
+     * @return ObjectRepository|EntityRepository|null
      */
     protected static function getPostRepository()
     {
@@ -103,7 +110,7 @@ abstract class Controller
     /**
      * Method to get the comsRepository
      *
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|null
+     * @return ObjectRepository|EntityRepository|null
      */
     protected static function getComsRepository()
     {
