@@ -1,12 +1,37 @@
 <?php
-
+/**
+ * Controller for user part of the blog
+ *
+ * PHP Version 7.+
+ *
+ * @category  Controllers
+ * @package   Controllers
+ * @author    Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @copyright 2019 Frakdev
+ * @license   http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link      sylvainsaez.fr
+ */
 namespace Controllers;
 
 use Entity\User;
 use System\Database;
 
+/**
+ * Class UserController
+ *
+ * @category Controllers
+ * @package  Controllers
+ * @author   Sylvain SAEZ <saez.sylvain@gmail.com>
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License
+ * @link     sylvainsaez.fr
+ */
 class UserController extends Controller
 {
+    /**
+     * Returns the Login Page For the user to log himself
+     *
+     * @return void
+     */
     public function loginPage()
     {
         $errors = [];
@@ -17,17 +42,23 @@ class UserController extends Controller
 
             if (!empty($userEmail) && !empty($userPassword)) {
                 if ($user == !$userEmail) {
-                    return $this->render('login.html.twig', ['hadToRegister' => true]);
+                    return $this->render(
+                        'login.html.twig',
+                        ['hadToRegister' => true]
+                    );
                 } elseif ($user->getEmail() == $userEmail) {
                     if (password_verify($userPassword, $user->getPassword())) {
                         $_SESSION["user"] = $user;
                         if ($user->getRole() == 26) {
-                            return $this->render('admin.html.twig');
+                            header('Location: /admin/admin');
                         } else {
                             return $this->render('index.html.twig');
                         }
                     } else {
-                        return $this->render('login.html.twig', ['checkmdp' => true]);
+                        return $this->render(
+                            'login.html.twig',
+                            ['checkmdp' => true]
+                        );
                     }
                 }
             } elseif (!empty($_POST['email']) && empty($_POST['password'])) {
@@ -35,12 +66,24 @@ class UserController extends Controller
             } elseif (empty($_POST['email']) && !empty($_POST['password'])) {
                 return $this->render('login.html.twig', ['email' => true]);
             } elseif (empty($_POST['email']) && empty($_POST['password'])) {
-                return $this->render('login.html.twig', ['mdp' => true, 'email' => true]);
+                return $this->render(
+                    'login.html.twig',
+                    ['mdp' => true,
+                        'email' => true]
+                );
             }
         }
         $this->render('login.html.twig', $errors);
     }
 
+    /**
+     * Return the Page for user to register
+     *
+     * @return void
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @throws \Doctrine\ORM\ORMException
+     */
     public function registerPage()
     {
         $errors = [];
@@ -52,7 +95,14 @@ class UserController extends Controller
                 $firstName = htmlentities(htmlspecialchars($_POST['firstName']));
                 $email = htmlentities(htmlspecialchars($_POST['email']));
                 $username = htmlentities(htmlspecialchars($_POST['username']));
-                $password = password_hash(htmlentities(htmlspecialchars($_POST['password'])), PASSWORD_DEFAULT);
+                $password = password_hash(
+                    htmlentities(
+                        htmlspecialchars(
+                            $_POST['password']
+                        )
+                    ),
+                    PASSWORD_DEFAULT
+                );
                 $role = htmlentities(htmlspecialchars($_POST['role']));
 
                 $user = new User();
@@ -66,7 +116,11 @@ class UserController extends Controller
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-                return $this->render('register.html.twig', ['submit' => true, 'user' => $user]);
+                return $this->render(
+                    'register.html.twig',
+                    ['submit' => true,
+                        'user' => $user]
+                );
             } else {
                 $errors = ['emptyForm' => true];
             }
