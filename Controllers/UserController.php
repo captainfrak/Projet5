@@ -13,8 +13,13 @@
  */
 namespace Controllers;
 
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Entity\User;
 use System\Database;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 /**
  * Class UserController
@@ -31,6 +36,10 @@ class UserController extends Controller
      * Returns the Login Page For the user to log himself
      *
      * @return void
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     public function loginPage()
     {
@@ -42,35 +51,41 @@ class UserController extends Controller
 
             if (!empty($userEmail) && !empty($userPassword)) {
                 if ($user == !$userEmail) {
-                    return $this->render(
+                    $this->render(
                         'login.html.twig',
                         ['hadToRegister' => true]
                     );
+                    exit();
                 } elseif ($user->getEmail() == $userEmail) {
                     if (password_verify($userPassword, $user->getPassword())) {
                         $_SESSION["user"] = $user;
                         if ($user->getRole() == 26) {
                             header('Location: /admin/admin');
                         } else {
-                            return $this->render('index.html.twig');
+                            $this->render('index.html.twig');
+                            exit();
                         }
                     } else {
-                        return $this->render(
+                        $this->render(
                             'login.html.twig',
                             ['checkmdp' => true]
                         );
+                        exit();
                     }
                 }
             } elseif (!empty($_POST['email']) && empty($_POST['password'])) {
-                return $this->render('login.html.twig', ['mdp' => true]);
+                $this->render('login.html.twig', ['mdp' => true]);
+                exit();
             } elseif (empty($_POST['email']) && !empty($_POST['password'])) {
-                return $this->render('login.html.twig', ['email' => true]);
+                $this->render('login.html.twig', ['email' => true]);
+                exit();
             } elseif (empty($_POST['email']) && empty($_POST['password'])) {
-                return $this->render(
+                $this->render(
                     'login.html.twig',
                     ['mdp' => true,
                         'email' => true]
                 );
+                exit();
             }
         }
         $this->render('login.html.twig', $errors);
@@ -80,9 +95,11 @@ class UserController extends Controller
      * Return the Page for user to register
      *
      * @return void
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
-     * @throws \Doctrine\ORM\ORMException
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function registerPage()
     {
@@ -116,11 +133,12 @@ class UserController extends Controller
 
                 $entityManager->persist($user);
                 $entityManager->flush();
-                return $this->render(
+                $this->render(
                     'register.html.twig',
                     ['submit' => true,
                         'user' => $user]
                 );
+                exit();
             } else {
                 $errors = ['emptyForm' => true];
             }
