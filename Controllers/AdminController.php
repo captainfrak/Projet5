@@ -62,10 +62,12 @@ class AdminController extends Controller
             if ($user->isAdmin()) {
                 return $this->render(
                     'admin.html.twig',
-                    ['nbUsers' => $nbUsers,
+                    [
+                        'nbUsers' => $nbUsers,
                         'nbPosts' => $nbPosts,
                         'nbComs' => $nbComs,
-                        'posts' => $posts]
+                        'posts' => $posts
+                    ]
                 );
             }
         }
@@ -85,18 +87,13 @@ class AdminController extends Controller
      */
     public function postArticlePage()
     {
+        //user connected at the moment
+        $user = $_SESSION['user'];
 
-        // todo user!! toi même tu sais
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
-
-        // if (!$user) return 404...
-        // your code...
-
-        if (isset($_SESSION)) {
-            $_SESSION["user"] = $user; // todo remove
-            if ($user == null) {
-                return $this->render('404.html.twig');
-            } elseif ($user->isAdmin()) {
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
                 $errors = [];
                 if ($_POST) {
                     if (!empty($_POST)) {
@@ -133,19 +130,21 @@ class AdminController extends Controller
                             $entityManager->flush();
                             return $this->render(
                                 'postArticle.html.twig',
-                                ['submit' => true,
-                                    'post' => $post]
+                                [
+                                    'submit' => true,
+                                    'post' => $post
+                                ]
                             );
 
                         }
                     }
                 }
                 return $this->render('postArticle.html.twig', $errors);
-            } elseif (!$user->isAdmin()) {
-                return $this->render('404.html.twig');
             }
         }
+        return $this->render('404.html.twig');
     }
+
 
     /**
      * Method to Erase an article
@@ -170,20 +169,18 @@ class AdminController extends Controller
          */
         $entityManager = Database::getEntityManager();
 
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        $user = $_SESSION['user'];
 
-        if (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
-            if ($user == null) {
-                return $this->render('404.html.twig');
-            } elseif ($user->getRole() != 26) {
-                return $this->render('404.html.twig');
-            } elseif ($user->getRole() == 26) {
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
                 $post = $entityManager->getRepository('Entity\\Post')->find($postId);
                 $entityManager->remove($post);
                 $entityManager->flush();
                 return $this->listArticle();
             }
+            return $this->render('404.html.twig');
         }
     }
 
@@ -199,15 +196,12 @@ class AdminController extends Controller
     public function listArticle()
     {
 
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        $user = $_SESSION['user'];
 
-        if (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
-            if ($user == null) {
-                return $this->render('404.html.twig');
-            } elseif ($user->getRole() != 26) {
-                return $this->render('404.html.twig');
-            } elseif ($user->getRole() == 26) {
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
                 $entityManager = Database::getEntityManager();
                 $posts = $entityManager->getRepository('Entity\\Post')->findBy(
                     [],
@@ -217,6 +211,7 @@ class AdminController extends Controller
                 return $this->render('listArticle.html.twig', ['posts' => $posts]);
             }
         }
+        return $this->render('404.html.twig');
     }
 
     /**
@@ -244,15 +239,12 @@ class AdminController extends Controller
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->find($postId);
 
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        $user = $_SESSION['user'];
 
-        if (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
-            if ($user == null) {
-                return $this->render('404.html.twig');
-            } elseif ($user->getRole() != 26) {
-                return $this->render('404.html.twig');
-            } elseif ($user->getRole() == 26) {
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
                 if ($_POST) {
                     if (!empty($_POST)) {
                         $entityManager = Database::getEntityManager();
@@ -280,7 +272,6 @@ class AdminController extends Controller
                                 'modify' => true,
                                 'post' => $post]
                         );
-
                     }
                 }
                 return $this->render(
@@ -289,6 +280,7 @@ class AdminController extends Controller
                         'post' => $post]
                 );
             }
+            return $this->render('404.html.twig');
         }
     }
 
@@ -309,16 +301,15 @@ class AdminController extends Controller
             ['id' => 'DESC']
         );
 
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
-        if ($user == null) {
+        $user = $_SESSION['user'];
+
+        if (!$user) {
             return $this->render('404.html.twig');
-        } elseif (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
+        } else {
             if ($user->isAdmin()) {
                 return $this->render('validate.html.twig', ['comments' => $comments]);
-            } else {
-                return $this->render('404.html.twig');
             }
+            return $this->render('404.html.twig');
         }
     }
 
@@ -348,11 +339,11 @@ class AdminController extends Controller
             ['id' => $commentId]
         );
 
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
-        if ($user == null) {
+        $user = $_SESSION['user'];
+
+        if (!$user) {
             return $this->render('404.html.twig');
-        } elseif (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
+        } else {
             if ($user->isAdmin()) {
                 $checked = 1;
                 $comment->setChecked($checked);
@@ -368,9 +359,8 @@ class AdminController extends Controller
                     ['comments' => $comments,
                         'success' => true]
                 );
-            } else {
-                return $this->render('404.html.twig');
             }
+            return $this->render('404.html.twig');
         }
     }
 
@@ -399,10 +389,10 @@ class AdminController extends Controller
         $comm = $entityManager->getRepository('Entity\\comment')->find($commentId);
 
         $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
-        if ($user == null) {
+
+        if (!$user) {
             return $this->render('404.html.twig');
-        } elseif (isset($_SESSION)) {
-            $_SESSION["user"] = $user;
+        } else {
             if ($user->isAdmin()) {
                 $entityManager->remove($comm);
                 $entityManager->flush();
@@ -416,9 +406,8 @@ class AdminController extends Controller
                     ['comments' => $comments,
                         'remove' => true]
                 );
-            } else {
-                return $this->render('404.html.twig');
             }
+            return $this->render('404.html.twig');
         }
     }
 }
