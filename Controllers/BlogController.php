@@ -113,7 +113,6 @@ class BlogController extends Controller
                     'success' => true
                 ]
             );
-
         }
         return $this->render(
             'singlePost.html.twig',
