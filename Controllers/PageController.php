@@ -54,7 +54,6 @@ class PageController extends Controller
             $headers .= "Reply-To: $email";
             mail($to, $email_subject, $email_body, $headers);
             return $this->render('index.html.twig', ['post' => true]);
-
         }
         return $this->render('index.html.twig');
     }
