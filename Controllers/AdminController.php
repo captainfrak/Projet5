@@ -243,15 +243,15 @@ class AdminController extends Controller
             return $this->render('404.html.twig');
         } else {
             if ($user->isAdmin()) {
-                if ($_POST) {
-                    if (!empty($_POST)) {
+                if (filter_input_array(INPUT_POST)) {
+                    if (!empty(filter_input_array(INPUT_POST))) {
                         $entityManager = Database::getEntityManager();
 
                         $title = filter_input(INPUT_POST, 'title');
                         $chapo = filter_input(INPUT_POST, 'chapo');
-                        $contentText = $_POST['content'];
-                        $author = $_POST['author'];
-                        $route = $_POST['route'];
+                        $contentText = filter_input(INPUT_POST, 'content');
+                        $author = filter_input(INPUT_POST, 'author');
+                        $route = filter_input(INPUT_POST, 'route');
                         $date = time();
 
                         $post
