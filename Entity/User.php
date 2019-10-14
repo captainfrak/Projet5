@@ -14,6 +14,8 @@
 
 namespace Entity;
 
+use Doctrine\ORM\Mapping\Entity;
+
 /**
  * Entity for the users used in the blog
  *
