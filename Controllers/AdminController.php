@@ -236,7 +236,7 @@ class AdminController extends Controller
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->find($postId);
 
-        $user = filter_input(INPUT_SESSION, 'user');
+        $user = $_SESSION['user'];
 
         if (!$user) {
             return $this->render('404.html.twig');
