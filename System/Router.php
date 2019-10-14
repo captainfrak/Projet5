@@ -22,6 +22,7 @@ use Controllers\PageController;
 use Controllers\UserController;
 
 session_start();
+$user = $_SESSION['user'];
 
 $path = explode('?', $_SERVER['REQUEST_URI'])[0];
 $regex = '/\/blog\/article\/([^.]+)/';
@@ -34,8 +35,14 @@ try {
         $controller = new BlogController();
         $controller->blog();
     } elseif (rtrim($path, '/') == "/login") {
-        $controller = new UserController();
-        $controller->loginPage();
+        if (!$user) {
+            $controller = new UserController();
+            $controller->loginPage();
+        } else {
+            $controller = new PageController();
+            $controller->homePage();
+        }
+
     } elseif (rtrim($path, '/') == "/admin/admin") {
         $controller = new AdminController();
         $controller->adminPage();
@@ -43,8 +50,13 @@ try {
         $controller = new AdminController();
         $controller->listArticle();
     } elseif (rtrim($path, '/') == "/register") {
-        $controller = new UserController();
-        $controller->registerPage();
+        if (!$user) {
+            $controller = new UserController();
+            $controller->registerPage();
+        } else {
+            $controller = new PageController();
+            $controller->homePage();
+        }
     } elseif (rtrim($path, '/') == "/admin/postarticle") {
         $controller = new AdminController();
         $controller->postArticlePage();
