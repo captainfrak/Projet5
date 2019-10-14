@@ -56,7 +56,7 @@ abstract class Controller
      * @param array $args arguments to load special features of the page
      *
      *
-     * @return void
+     * @return void|string
      * @throws RuntimeError
      * @throws SyntaxError
      *
