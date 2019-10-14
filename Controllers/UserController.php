@@ -43,7 +43,6 @@ class UserController extends Controller
      */
     public function loginPage()
     {
-        $errors = [];
         if ($_POST) {
             $userEmail = htmlentities(htmlspecialchars($_POST['email']));
             $userPassword = htmlentities(htmlspecialchars($_POST['password']));
@@ -55,7 +54,6 @@ class UserController extends Controller
                         'login.html.twig',
                         ['hadToRegister' => true]
                     );
-
                 } elseif ($user->getEmail() == $userEmail) {
                     if (password_verify($userPassword, $user->getPassword())) {
                         $_SESSION["user"] = $user;
@@ -63,32 +61,17 @@ class UserController extends Controller
                             header('Location: /admin/admin');
                         } else {
                             return $this->render('index.html.twig');
-                            
                         }
                     } else {
                         return $this->render(
                             'login.html.twig',
-                            ['checkmdp' => true]
+                            ['checkmdp' => true, 'emailForm' => $userEmail]
                         );
-
                     }
                 }
-            } elseif (!empty($_POST['email']) && empty($_POST['password'])) {
-                return $this->render('login.html.twig', ['mdp' => true]);
-                
-            } elseif (empty($_POST['email']) && !empty($_POST['password'])) {
-                return $this->render('login.html.twig', ['email' => true]);
-                
-            } elseif (empty($_POST['email']) && empty($_POST['password'])) {
-                return $this->render(
-                    'login.html.twig',
-                    ['mdp' => true,
-                        'email' => true]
-                );
-
             }
         }
-        return $this->render('login.html.twig', $errors);
+        return $this->render('login.html.twig');
     }
 
     /**
