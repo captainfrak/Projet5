@@ -138,7 +138,6 @@ class UserController extends Controller
                     ['submit' => true,
                         'user' => $user]
                 );
-
             } else {
                 $errors = ['emptyForm' => true];
             }
