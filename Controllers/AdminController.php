@@ -248,7 +248,7 @@ class AdminController extends Controller
                         $entityManager = Database::getEntityManager();
 
                         $title = filter_input(INPUT_POST, 'title');
-                        $chapo = $_POST['chapo'];
+                        $chapo = filter_input(INPUT_POST, 'chapo');
                         $contentText = $_POST['content'];
                         $author = $_POST['author'];
                         $route = $_POST['route'];
