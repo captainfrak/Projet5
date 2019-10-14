@@ -115,7 +115,6 @@ class BlogController extends Controller
             );
 
         }
-
         return $this->render(
             'singlePost.html.twig',
             ['post' => $post,
