@@ -225,11 +225,10 @@ class AdminController extends Controller
      */
     public function modifyArticle()
     {
-
         /**
          * Get the Id of the post
          */
-        $postId = (int)$_GET['postId'];
+        $postId = (int)filter_input(INPUT_GET, 'postId');
 
         /**
          * Getting the entity manager
@@ -237,7 +236,7 @@ class AdminController extends Controller
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->find($postId);
 
-        $user = $_SESSION['user'];
+        $user = filter_input(INPUT_SESSION, 'user');
 
         if (!$user) {
             return $this->render('404.html.twig');
@@ -386,7 +385,7 @@ class AdminController extends Controller
         $entityManager = Database::getEntityManager();
         $comm = $entityManager->getRepository('Entity\\comment')->find($commentId);
 
-        $user = self::getUserRepository()->findOneBy(['id' => $_SESSION['user']]);
+        $user = $_SESSION['user'];
 
         if (!$user) {
             return $this->render('404.html.twig');
