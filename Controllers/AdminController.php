@@ -97,7 +97,7 @@ class AdminController extends Controller
                     if (!empty($_POST)) {
                         $entityManager = Database::getEntityManager();
 
-                        $title = $_POST['title'];
+                        $title = filter_var($_POST['title'], FILTER_SANITIZE_STRING);
                         $chapo = $_POST['chapo'];
                         $contentText = $_POST['content'];
                         $author = $_POST['author'];
