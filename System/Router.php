@@ -42,7 +42,6 @@ try {
             $controller = new PageController();
             $controller->homePage();
         }
-
     } elseif (rtrim($path, '/') == "/admin/admin") {
         $controller = new AdminController();
         $controller->adminPage();
