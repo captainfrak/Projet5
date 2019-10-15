@@ -105,22 +105,28 @@ class UserController extends Controller
                 );
                 $role = htmlentities(htmlspecialchars($_POST['role']));
 
-                $user = new User();
-                $user
-                    ->setName($name)
-                    ->setFirstName($firstName)
-                    ->setEmail($email)
-                    ->setRole($role)
-                    ->setPassword($password)
-                    ->setUsername($username);
+                $userEmail = self::getUserRepository()->findOneBy(['email' => $email]);
 
-                $entityManager->persist($user);
-                $entityManager->flush();
-                return $this->render(
-                    'register.html.twig',
-                    ['submit' => true,
-                        'user' => $user]
-                );
+                if ($userEmail === null) {
+                    $user = new User();
+                    $user
+                        ->setName($name)
+                        ->setFirstName($firstName)
+                        ->setEmail($email)
+                        ->setRole($role)
+                        ->setPassword($password)
+                        ->setUsername($username);
+
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                    return $this->render(
+                        'register.html.twig',
+                        ['submit' => true,
+                            'user' => $user]
+                    );
+                } else {
+                    return $this->render('register.html.twig', ['badmail' => true]);
+                }
             } else {
                 $errors = ['emptyForm' => true];
             }

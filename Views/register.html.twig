@@ -57,6 +57,11 @@
                         <input name="email" type="email" class="form-control" placeholder="Email" id="email" required
                                data-validation-required-message="Veuillez entrer votre email.">
                         <p class="help-block text-danger"></p>
+                        {% if badmail %}
+                            <div class="alert alert-danger">
+                                Merci de rentrer une autre adresse mail
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="form-group floating-label-form-group controls">
                         <label>Password</label>
