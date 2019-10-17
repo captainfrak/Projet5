@@ -55,50 +55,58 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row justify-content-center">
-            <h1 class="w-100 mb-4 text-center">Gestion des commentaires</h1>
-
-            <div class="col-lg-3 mb-3" id="sidebar">
-                <br>
+            <div class="col-lg-3 col-md-3 mt-5" id="sidebar">
                 <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
                 <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
                 <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
                 <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
                 <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
             </div>
-            <div class="col-lg-8 col-md-8 m-4">
-                    {% if success %}
-                        <div class="alert alert-success">
+            <div class="col-lg-8 col-md-8 mx-auto">
+                <div class="row justify-content-center">
+                    <h1 class="text-center pb-1">Gestion des commentaires</h1>
+                </div>
+                {% if success %}
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="alert alert-success" role="alert">
                             Le commentaire a bien été validé
                         </div>
-                    {% endif %}
-                    {% if remove %}
-                        <div class="alert alert-info">
-                            Le commentaire a bien été supprimé
                         </div>
-                    {% endif %}
-                    {% for comment in comments %}
-                        <div class="card text-center dark mb-3">
-                            <div class="card-header">
-                                Dans : {{ comment.post.title }}
-                            </div>
-                            <div class="card-body">
-                                <h6 class="card-title">De : {{ comment.author }} || Le
-                                    : {{ comment.dateCreation|date("d/m/Y") }} </h6>
-                                <p class="card-text">{{ comment.message }}</p>
-                            </div>
-                            <div class="card-footer">
-                                <a href="/admin/validate?commentId={{ comment.id }}">
-                                    <button class="btn btn-success"><i class="fas fa-check"></i></button>
-                                </a>
-                                <a href="/admin/delete?commentId={{ comment.id }}">
-                                    <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-                                </a>
+                    </div>
+                {% endif %}
+                {% if remove %}
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="alert alert-info" role="alert">
+                                Le commentaire a bien été supprimé
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endif %}
+                {% for comment in comments %}
+                    <div class="card text-center dark mb-3">
+                        <div class="card-header">
+                            Dans : {{ comment.post.title }}
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title">De : {{ comment.author }} || Le
+                                : {{ comment.dateCreation|date("d/m/Y") }} </h6>
+                            <p class="card-text">{{ comment.message }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="/admin/validate?commentId={{ comment.id }}">
+                                <button class="btn btn-success"><i class="fas fa-check"></i></button>
+                            </a>
+                            <a href="/admin/delete?commentId={{ comment.id }}">
+                                <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
