@@ -56,20 +56,22 @@ class AdminController extends Controller
         //user connected at the moment
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
-
-        if ($user->isAdmin()) {
-            return $this->render(
-                'admin.html.twig',
-                [
-                    'nbUsers' => $nbUsers,
-                    'nbPosts' => $nbPosts,
-                    'nbComs' => $nbComs,
-                    'posts' => $posts
-                ]
-            );
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                return $this->render(
+                    'admin.html.twig',
+                    [
+                        'nbUsers' => $nbUsers,
+                        'nbPosts' => $nbPosts,
+                        'nbComs' => $nbComs,
+                        'posts' => $posts
+                    ]
+                );
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -88,56 +90,57 @@ class AdminController extends Controller
         //user connected at the moment
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                $errors = [];
+                if ($_POST) {
+                    if (!empty($_POST)) {
+                        $entityManager = Database::getEntityManager();
 
-        if ($user->isAdmin()) {
-            $errors = [];
-            if ($_POST) {
-                if (!empty($_POST)) {
-                    $entityManager = Database::getEntityManager();
+                        $title = $_POST['title'];
+                        $chapo = $_POST['chapo'];
+                        $contentText = $_POST['content'];
+                        $author = $_POST['author'];
+                        $route = $_POST['route'];
+                        $date = time();
 
-                    $title = $_POST['title'];
-                    $chapo = $_POST['chapo'];
-                    $contentText = $_POST['content'];
-                    $author = $_POST['author'];
-                    $route = $_POST['route'];
-                    $date = time();
-
-                    $postRoute = self::getPostRepository()->findOneBy(
-                        ['route' => $route]
-                    );
-                    if ($postRoute == !null) {
-                        return $this->render(
-                            'postArticle.html.twig',
-                            ['double' => true]
+                        $postRoute = self::getPostRepository()->findOneBy(
+                            ['route' => $route]
                         );
-                    } else {
-                        $post = new Post();
-                        $post
-                            ->setTitle($title)
-                            ->setChapo($chapo)
-                            ->setContentText($contentText)
-                            ->setAuthor($author)
-                            ->setRoute($route)
-                            ->setDateCreation($date);
+                        if ($postRoute == !null) {
+                            return $this->render(
+                                'postArticle.html.twig',
+                                ['double' => true]
+                            );
+                        } else {
+                            $post = new Post();
+                            $post
+                                ->setTitle($title)
+                                ->setChapo($chapo)
+                                ->setContentText($contentText)
+                                ->setAuthor($author)
+                                ->setRoute($route)
+                                ->setDateCreation($date);
 
-                        $entityManager->persist($post);
-                        $entityManager->flush();
-                        return $this->render(
-                            'postArticle.html.twig',
-                            [
-                                'submit' => true,
-                                'post' => $post
-                            ]
-                        );
+                            $entityManager->persist($post);
+                            $entityManager->flush();
+                            return $this->render(
+                                'postArticle.html.twig',
+                                [
+                                    'submit' => true,
+                                    'post' => $post
+                                ]
+                            );
+                        }
                     }
                 }
+                return $this->render('postArticle.html.twig', $errors);
             }
-            return $this->render('postArticle.html.twig', $errors);
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
-
 
     /**
      * Method to Erase an article
@@ -164,15 +167,17 @@ class AdminController extends Controller
 
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
-
-        if ($user->isAdmin()) {
-            $post = $entityManager->getRepository('Entity\\Post')->find($postId);
-            $entityManager->remove($post);
-            $entityManager->flush();
-            return $this->listArticle();
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                $post = $entityManager->getRepository('Entity\\Post')->find($postId);
+                $entityManager->remove($post);
+                $entityManager->flush();
+                return $this->listArticle();
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -186,20 +191,21 @@ class AdminController extends Controller
      */
     public function listArticle()
     {
-
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
-
-        if ($user->isAdmin()) {
-            $entityManager = Database::getEntityManager();
-            $posts = $entityManager->getRepository('Entity\\Post')->findBy(
-                [],
-                ['id' => 'DESC']
-            );
-            return $this->render('listArticle.html.twig', ['posts' => $posts]);
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                $entityManager = Database::getEntityManager();
+                $posts = $entityManager->getRepository('Entity\\Post')->findBy(
+                    [],
+                    ['id' => 'DESC']
+                );
+                return $this->render('listArticle.html.twig', ['posts' => $posts]);
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -228,45 +234,47 @@ class AdminController extends Controller
 
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                if ($_POST) {
+                    if (!empty($_POST)) {
+                        $entityManager = Database::getEntityManager();
 
-        if ($user->isAdmin()) {
-            if ($_POST) {
-                if (!empty($_POST)) {
-                    $entityManager = Database::getEntityManager();
+                        $title = $_POST['title'];
+                        $chapo = $_POST['chapo'];
+                        $contentText = $_POST['content'];
+                        $author = $_POST['author'];
+                        $route = $_POST['route'];
+                        $date = time();
 
-                    $title = $_POST['title'];
-                    $chapo = $_POST['chapo'];
-                    $contentText = $_POST['content'];
-                    $author = $_POST['author'];
-                    $route = $_POST['route'];
-                    $date = time();
+                        $post
+                            ->setTitle($title)
+                            ->setChapo($chapo)
+                            ->setContentText($contentText)
+                            ->setAuthor($author)
+                            ->setRoute($route)
+                            ->setDateCreation($date);
 
-                    $post
-                        ->setTitle($title)
-                        ->setChapo($chapo)
-                        ->setContentText($contentText)
-                        ->setAuthor($author)
-                        ->setRoute($route)
-                        ->setDateCreation($date);
-
-                    $entityManager->persist($post);
-                    $entityManager->flush();
-                    return $this->render(
-                        'postArticle.html.twig',
-                        ['changes' => true,
-                            'modify' => true,
-                            'post' => $post]
-                    );
+                        $entityManager->persist($post);
+                        $entityManager->flush();
+                        return $this->render(
+                            'postArticle.html.twig',
+                            ['changes' => true,
+                                'modify' => true,
+                                'post' => $post]
+                        );
+                    }
                 }
+                return $this->render(
+                    'postArticle.html.twig',
+                    ['modify' => true,
+                        'post' => $post]
+                );
             }
-            return $this->render(
-                'postArticle.html.twig',
-                ['modify' => true,
-                    'post' => $post]
-            );
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -288,12 +296,14 @@ class AdminController extends Controller
 
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
-
-        if ($user->isAdmin()) {
-            return $this->render('validate.html.twig', ['comments' => $comments]);
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                return $this->render('validate.html.twig', ['comments' => $comments]);
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -324,25 +334,27 @@ class AdminController extends Controller
 
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                $checked = 1;
+                $comment->setChecked($checked);
+                $entityManager->persist($comment);
+                $entityManager->flush();
 
-        if ($user->isAdmin()) {
-            $checked = 1;
-            $comment->setChecked($checked);
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-                ['checked' => 0],
-                ['id' => 'DESC']
-            );
-            return $this->render(
-                'validate.html.twig',
-                ['comments' => $comments,
-                    'success' => true]
-            );
+                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
+                    ['checked' => 0],
+                    ['id' => 'DESC']
+                );
+                return $this->render(
+                    'validate.html.twig',
+                    ['comments' => $comments,
+                        'success' => true]
+                );
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -371,22 +383,24 @@ class AdminController extends Controller
 
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                $entityManager->remove($comm);
+                $entityManager->flush();
 
-        if ($user->isAdmin()) {
-            $entityManager->remove($comm);
-            $entityManager->flush();
-
-            $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-                ['checked' => 0],
-                ['id' => 'DESC']
-            );
-            return $this->render(
-                'validate.html.twig',
-                ['comments' => $comments,
-                    'remove' => true]
-            );
+                $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
+                    ['checked' => 0],
+                    ['id' => 'DESC']
+                );
+                return $this->render(
+                    'validate.html.twig',
+                    ['comments' => $comments,
+                        'remove' => true]
+                );
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 }
