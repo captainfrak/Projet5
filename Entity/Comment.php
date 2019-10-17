@@ -77,7 +77,7 @@ class Comment
      * The post where the comment have been post
      *
      * @ManyToOne(targetEntity="Post")
-     * @JoinColumn(name="post_id",     referencedColumnName="id")
+     * @JoinColumn(name="post_id",     referencedColumnName="id", onDelete="CASCADE")
      */
     protected $post;
 

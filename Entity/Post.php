@@ -247,4 +247,9 @@ class Post
     {
         $this->comments = new ArrayCollection();
     }
+
+    public function removeComment(Post $id)
+    {
+        $this->comments->remove($id);
+    }
 }
