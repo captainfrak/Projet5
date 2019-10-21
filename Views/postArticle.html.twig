@@ -55,50 +55,55 @@
 {% endblock %}
 
 {% block body %}
-<div class="container">
-    {% if  submit %}
+    <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="alert alert-success">
-                Bravo !
-                Ton article ({{ post.title }}) a bien été enregistré!
+            <div class="col-lg-3 col-md-3 mt-5" id="sidebar">
+                <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
+                <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
+                <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
+                <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
+                <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
             </div>
-        </div>
-    {% endif %}
-    {% if changes %}
-        <div class="row justify-content-center">
-            <div class="col">
-                <div class="alert alert-info">
-                    Bravo !
-                    Ton article ({{ post.title }}) a bien été modifié!
+            <div class="col-lg-8 col-md-8 mx-auto">
+                <div class="row justify-content-center">
+                    <div class="text-center pb-1">
+                        {% if modify %}
+                            <h1>Modifier votre article</h1>
+                        {% else %}
+                            <h1>Nouvel Article</h1>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
-        </div>
-    {% endif %}
-    {% if double %}
-        <div class="row justify-content-center">
-            <div class="alert alert-danger">
-                LA Route de l'article doit être unique
-            </div>
-        </div>
-    {% endif %}
-    <div class="row justify-content-center">
-        <div class="col-lg-3 col-md-3 mt-5" id="sidebar">
-            <br>
-            <a href="/admin/listarticle" class="btn btn-dark btn-block">Liste des articles</a>
-            <a href="/admin/postarticle" class="btn btn-dark btn-block">Publier un article</a>
-            <a href="/admin/validation" class="btn btn-dark btn-block">Validation commentaires</a>
-            <a href="postarticle.html" class="btn btn-dark btn-block disabled">Ajouter un projet</a>
-            <a href="postarticle.html" class="btn btn-dark btn-block disabled">Modifier un projet</a>
-        </div>
-        <div class="col-lg-8 col-md-8 mx-auto">
+                {% if  submit %}
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="alert alert-success">
+                                Bravo !
+                                Ton article ({{ post.title }}) a bien été enregistré!
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if changes %}
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="alert alert-info">
+                                Bravo !
+                                Ton article ({{ post.title }}) a bien été modifié!
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if double %}
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="alert alert-danger">
+                                LA Route de l'article doit être unique
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             <div class="row justify-content-center">
-                <div class="col-9 text-center">
-                    {% if modify %}
-                        <h1>Modifier votre article</h1>
-                    {% else %}
-                        <h1>Nouvel Article</h1>
-                    {% endif %}
-                </div>
                 {% if modify %}
                     <div class="row justify-content-center">
                         <form action="" name="postarticle" method="post">

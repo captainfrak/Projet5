@@ -80,46 +80,47 @@ class BlogController extends Controller
             )
         );
 
-        if (!$post) return $this->render('404.html.twig');
-
-        $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-            ['post' => $post, 'checked' => 1],
-            ['id' => 'DESC']
-        );
-
-        // If $route match with existing route
-        if (!empty($_POST)) {
-            $author = $_SESSION["user"]->getUsername();
-            $message = $_POST['message'];
-            $checked = 0;
-            $postDate = time();
-
-            $comment = new Comment();
-            $comment
-                ->setAuthor($author)
-                ->setMessage($message)
-                ->setChecked($checked)
-                ->setPostdate($postDate)
-                ->setPost($post);
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-            return $this->render(
-                'singlePost.html.twig',
-                [
-                    'post' => $post,
-                    'user' => $user,
-                    'comments' => $comments,
-                    'success' => true
-                ]
+        if (!$post) {
+            return $this->render('404.html.twig');
+        } else {
+            $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
+                ['post' => $post, 'checked' => 1],
+                ['id' => 'DESC']
             );
 
+            // If $route match with existing route
+            if (!empty($_POST)) {
+                $author = $_SESSION["user"]->getUsername();
+                $message = $_POST['message'];
+                $checked = 0;
+                $postDate = time();
+
+                $comment = new Comment();
+                $comment
+                    ->setAuthor($author)
+                    ->setMessage($message)
+                    ->setChecked($checked)
+                    ->setPostdate($postDate)
+                    ->setPost($post);
+
+                $entityManager->persist($comment);
+                $entityManager->flush();
+                return $this->render(
+                    'singlePost.html.twig',
+                    [
+                        'post' => $post,
+                        'user' => $user,
+                        'comments' => $comments,
+                        'success' => true
+                    ]
+                );
+            }
+            return $this->render(
+                'singlePost.html.twig',
+                ['post' => $post,
+                    'session' => $user,
+                    'comments' => $comments]
+            );
         }
-        return $this->render(
-            'singlePost.html.twig',
-            ['post' => $post,
-                'session' => $user,
-                'comments' => $comments]
-        );
     }
 }

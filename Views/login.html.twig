@@ -41,12 +41,14 @@
             <form name="login" action="" method="post" id="login">
                 <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
-                        <label>Indentifiant</label>
-                        <input name="email" type="text" class="form-control" placeholder="email" id="email" required
-                               data-validation-required-message="Veuillez entrer votre email.">
-                        <p class="help-block text-danger"></p>
-                        {% if  email %}
-                            <div class="alert alert-danger">Merci de renseigner votre email</div>
+                        <label>Email</label>
+                        {% if emailForm %}
+                            <input name="email" type="text" class="form-control" value="{{ emailForm }}" id="email"
+                                   required
+                                   data-validation-required-message="Veuillez entrer votre email.">
+                        {% else %}
+                            <input name="email" type="text" class="form-control" placeholder="email" id="email" required
+                                   data-validation-required-message="Veuillez entrer votre email.">
                         {% endif %}
                     </div>
                 </div>
@@ -57,9 +59,6 @@
                                id="password" required
                                data-validation-required-message="Veuillez entrer votre mot de passe.">
                         <p class="help-block text-danger"></p>
-                        {% if  mdp %}
-                            <div class="alert alert-danger">Merci de renseigner votre mot de passe</div>
-                        {% endif %}
                         {% if  checkmdp %}
                             <div class="alert alert-danger">Merci de renseigner le bon mot de passe</div>
                         {% endif %}

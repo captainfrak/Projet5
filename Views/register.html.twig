@@ -39,8 +39,6 @@
                                data-validation-required-message="Veuillez entrer votre identifiant.">
                         <p class="help-block text-danger"></p>
                     </div>
-                </div>
-                <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Nom</label>
                         <input name="name" type="text" class="form-control" placeholder="Votre nom" id="name" required
@@ -54,16 +52,17 @@
                                data-validation-required-message="Veuillez entrer votre prénom.">
                         <p class="help-block text-danger"></p>
                     </div>
-                </div>
-                <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>email</label>
                         <input name="email" type="email" class="form-control" placeholder="Email" id="email" required
                                data-validation-required-message="Veuillez entrer votre email.">
                         <p class="help-block text-danger"></p>
+                        {% if badmail %}
+                            <div class="alert alert-danger">
+                                Merci de rentrer une autre adresse mail
+                            </div>
+                        {% endif %}
                     </div>
-                </div>
-                <div class="control-group">
                     <div class="form-group floating-label-form-group controls">
                         <label>Password</label>
                         <input name="password" type="password" class="form-control" placeholder="Mot de passe"

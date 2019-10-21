@@ -56,20 +56,22 @@ class AdminController extends Controller
         //user connected at the moment
         $user = $_SESSION['user'];
 
-        if (!$user) return $this->render('404.html.twig');
-
-        if ($user->isAdmin()) {
-            return $this->render(
-                'admin.html.twig',
-                [
-                    'nbUsers' => $nbUsers,
-                    'nbPosts' => $nbPosts,
-                    'nbComs' => $nbComs,
-                    'posts' => $posts
-                ]
-            );
+        if (!$user) {
+            return $this->render('404.html.twig');
+        } else {
+            if ($user->isAdmin()) {
+                return $this->render(
+                    'admin.html.twig',
+                    [
+                        'nbUsers' => $nbUsers,
+                        'nbPosts' => $nbPosts,
+                        'nbComs' => $nbComs,
+                        'posts' => $posts
+                    ]
+                );
+            }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -107,13 +109,11 @@ class AdminController extends Controller
                         $postRoute = self::getPostRepository()->findOneBy(
                             ['route' => $route]
                         );
-
                         if ($postRoute == !null) {
                             return $this->render(
                                 'postArticle.html.twig',
                                 ['double' => true]
                             );
-
                         } else {
                             $post = new Post();
                             $post
@@ -133,16 +133,14 @@ class AdminController extends Controller
                                     'post' => $post
                                 ]
                             );
-
                         }
                     }
                 }
                 return $this->render('postArticle.html.twig', $errors);
             }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
-
 
     /**
      * Method to Erase an article
@@ -193,7 +191,6 @@ class AdminController extends Controller
      */
     public function listArticle()
     {
-
         $user = $_SESSION['user'];
 
         if (!$user) {
@@ -205,11 +202,10 @@ class AdminController extends Controller
                     [],
                     ['id' => 'DESC']
                 );
-
                 return $this->render('listArticle.html.twig', ['posts' => $posts]);
             }
+            return $this->render('404.html.twig');
         }
-        return $this->render('404.html.twig');
     }
 
     /**
@@ -228,7 +224,7 @@ class AdminController extends Controller
         /**
          * Get the Id of the post
          */
-        $postId = (int)filter_input(INPUT_GET, 'postId');
+        $postId = (int)$_GET['postId'];
 
         /**
          * Getting the entity manager
@@ -242,15 +238,15 @@ class AdminController extends Controller
             return $this->render('404.html.twig');
         } else {
             if ($user->isAdmin()) {
-                if (filter_input_array(INPUT_POST)) {
-                    if (!empty(filter_input_array(INPUT_POST))) {
+                if ($_POST) {
+                    if (!empty($_POST)) {
                         $entityManager = Database::getEntityManager();
 
-                        $title = filter_input(INPUT_POST, 'title');
-                        $chapo = filter_input(INPUT_POST, 'chapo');
-                        $contentText = filter_input(INPUT_POST, 'content');
-                        $author = filter_input(INPUT_POST, 'author');
-                        $route = filter_input(INPUT_POST, 'route');
+                        $title = $_POST['title'];
+                        $chapo = $_POST['chapo'];
+                        $contentText = $_POST['content'];
+                        $author = $_POST['author'];
+                        $route = $_POST['route'];
                         $date = time();
 
                         $post
