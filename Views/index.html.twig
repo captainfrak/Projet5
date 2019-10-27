@@ -94,8 +94,9 @@
     <div class="container">
         {% if user %}
             <div class="row justify-content-center">
-                {{ user.name }} tu es connecté!
-                {{ user.email }}
+                <alert class="alert alert-info">
+                    {{ user.username }} tu es connecté!
+                </alert>
             </div>
         {% endif %}
         <div class="row">
