@@ -37,7 +37,7 @@
             <div class="row justify-content-center border border-light p-2 m-4">
                 <div class="col-lg-6 sm">
                     <div class="row sm-6">
-                        De : {{ comment.author }}
+                        De : {{ comment.user.username }}
                     </div>
                     <div class="row sm-6">
                         Le : {{ comment.postdate|date("d/m/Y") }}

@@ -92,7 +92,7 @@
                             Dans : {{ comment.post.title }}
                         </div>
                         <div class="card-body">
-                            <h6 class="card-title">De : {{ comment.author }} || Le
+                            <h6 class="card-title">De : {{ comment.user.username }} || Le
                                 : {{ comment.dateCreation|date("d/m/Y") }} </h6>
                             <p class="card-text">{{ comment.message }}</p>
                         </div>
