@@ -90,14 +90,13 @@ class BlogController extends Controller
 
             // If $route match with existing route
             if (!empty($_POST)) {
-                $author = $_SESSION["user"]->getUsername();
                 $message = $_POST['message'];
                 $checked = 0;
                 $postDate = time();
 
                 $comment = new Comment();
                 $comment
-                    ->setAuthor($author)
+                    ->setUser($user)
                     ->setMessage($message)
                     ->setChecked($checked)
                     ->setPostdate($postDate)

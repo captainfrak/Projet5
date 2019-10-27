@@ -42,12 +42,12 @@ class Comment
     protected $id;
 
     /**
-     * The auhtor of the comment
+     * The user wha have post the comment
      *
-     * @var                   string $author
-     * @Column(type="string")
+     * @ManyToOne(targetEntity="User", cascade={"persist"})
+     * @JoinColumn(name="user_id",     referencedColumnName="id")
      */
-    protected $author;
+    protected $user;
 
     /**
      * The content of the comment
@@ -91,28 +91,7 @@ class Comment
         return $this->id;
     }
 
-    /**
-     * Get the author of the comment
-     *
-     * @return string
-     */
-    public function getAuthor(): string
-    {
-        return $this->author;
-    }
 
-    /**
-     * Set the author of the comment
-     *
-     * @param string $author name of the author
-     *
-     * @return Comment
-     */
-    public function setAuthor(string $author): Comment
-    {
-        $this->author = $author;
-        return $this;
-    }
 
     /**
      * Get the message of the comment
@@ -203,6 +182,25 @@ class Comment
     public function setPost($post): Comment
     {
         $this->post = $post;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     *
+     * @return Comment
+     */
+    public function setUser($user): Comment
+    {
+        $this->user = $user;
         return $this;
     }
 }

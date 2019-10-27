@@ -14,6 +14,7 @@
 
 namespace Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\Entity;
 
 /**
@@ -86,6 +87,11 @@ class User
      * @role @column(type="integer")
      */
     private $role;
+
+    /**
+     * OneToMany(targetEntity="Comment", mappedBy="user")
+     */
+    private $comments;
 
     /**
      * Get the user id
@@ -243,5 +249,10 @@ class User
     public function isAdmin(): bool
     {
         return $this->role === self::$ADMIN_ROLE_ID;
+    }
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
     }
 }
