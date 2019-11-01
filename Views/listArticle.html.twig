@@ -67,6 +67,15 @@
                 <div class="row justify-content-center">
                     <h1 class="text-center pb-1">Gestion des articles</h1>
                 </div>
+                {% if delete %}
+                    <div class="row justify-content-center">
+                        <div class="col">
+                            <div class="alert alert-danger">
+                                L'article a bien été supprimé
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
                 <div class="row justify-centent-center">
                     <table class="table table-striped table-dark">
                         <thead class="thead-dark">
