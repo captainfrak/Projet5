@@ -44,7 +44,7 @@ class Comment
     /**
      * The user wha have post the comment
      *
-     * @ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ManyToOne(targetEntity="User")
      * @JoinColumn(name="user_id",     referencedColumnName="id")
      */
     protected $user;
@@ -60,10 +60,10 @@ class Comment
     /**
      * The status of the comment after being post
      *
-     * @var                    integer $checked
-     * @Column(type="integer")
+     * @var                    boolean $checked
+     * @Column(type="boolean", options={"default":"0"})
      */
-    protected $checked;
+    protected $checked = false;
 
     /**
      * The time when the comment have been post

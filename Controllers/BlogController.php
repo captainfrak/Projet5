@@ -72,6 +72,7 @@ class BlogController extends Controller
         /** @var User $user */
         $user = $_SESSION['user'];
 
+
         // GET EM
         $entityManager = Database::getEntityManager();
         $post = $entityManager->getRepository('Entity\\Post')->findOneBy(
@@ -79,26 +80,27 @@ class BlogController extends Controller
                 'route' => $route
             )
         );
+        $author = $entityManager->getRepository('Entity\User')->findOneBy(
+            ['id' => $user]
+        );
 
         if (!$post) {
             return $this->render('404.html.twig');
         } else {
             $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-                ['post' => $post, 'checked' => 1],
+                ['post' => $post, 'checked' => true],
                 ['id' => 'DESC']
             );
 
             // If $route match with existing route
             if (!empty($_POST)) {
                 $message = $_POST['message'];
-                $checked = 0;
                 $postDate = time();
 
                 $comment = new Comment();
                 $comment
-                    ->setUser($user)
+                    ->setUser($author)
                     ->setMessage($message)
-                    ->setChecked($checked)
                     ->setPostdate($postDate)
                     ->setPost($post);
 

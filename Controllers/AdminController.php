@@ -174,7 +174,11 @@ class AdminController extends Controller
                 $post = $entityManager->getRepository('Entity\\Post')->find($postId);
                 $entityManager->remove($post);
                 $entityManager->flush();
-                return $this->listArticle();
+                $posts = $entityManager->getRepository('Entity\\Post')->findBy(
+                    [],
+                    ['id' => 'DESC']
+                );
+                return $this->render('listArticle.html.twig', ['posts' => $posts, 'delete' => true]);
             }
             return $this->render('404.html.twig');
         }
@@ -290,7 +294,7 @@ class AdminController extends Controller
     {
         $entityManager = Database::getEntityManager();
         $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-            ['checked' => 0],
+            ['checked' => false],
             ['id' => 'DESC']
         );
 
@@ -328,7 +332,7 @@ class AdminController extends Controller
          * Getting the entity manager
          */
         $entityManager = Database::getEntityManager();
-        $comment = $entityManager->getRepository('Entity\\comment')->findOneBy(
+        $comment = $entityManager->getRepository('Entity\\Comment')->findOneBy(
             ['id' => $commentId]
         );
 
@@ -338,13 +342,13 @@ class AdminController extends Controller
             return $this->render('404.html.twig');
         } else {
             if ($user->isAdmin()) {
-                $checked = 1;
+                $checked = true;
                 $comment->setChecked($checked);
                 $entityManager->persist($comment);
                 $entityManager->flush();
 
                 $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-                    ['checked' => 0],
+                    ['checked' => false],
                     ['id' => 'DESC']
                 );
                 return $this->render(
@@ -379,7 +383,7 @@ class AdminController extends Controller
          * Getting the entity manager
          */
         $entityManager = Database::getEntityManager();
-        $comm = $entityManager->getRepository('Entity\\comment')->find($commentId);
+        $comm = $entityManager->getRepository('Entity\\Comment')->find($commentId);
 
         $user = $_SESSION['user'];
 
@@ -391,7 +395,7 @@ class AdminController extends Controller
                 $entityManager->flush();
 
                 $comments = $entityManager->getRepository('Entity\\Comment')->findBy(
-                    ['checked' => 0],
+                    ['checked' => false],
                     ['id' => 'DESC']
                 );
                 return $this->render(
