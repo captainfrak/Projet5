@@ -1,4 +1,4 @@
-#Peojet 5 - Créer un Blog
+#Projet 5 - Créer un Blog
 [![CodeFactor](https://www.codefactor.io/repository/github/captainfrak/projet5/badge)](https://www.codefactor.io/repository/github/captainfrak/projet5)
 
 ##1 Thème utilisé
