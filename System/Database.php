@@ -61,3 +61,4 @@ class Database
         return self::$entityManager;
     }
 }
+
